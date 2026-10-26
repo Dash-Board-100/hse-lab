@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HSE Lab | Check the data. Understand the risk. Explain the next action.</title>
+<meta name="description" content="HSE Lab is a concept for practical HSE learning: guided decision labs, one worksheet per session, and a management brief you can keep.">
+<style>
+:root{
+  --navy:#082b5c; --navy2:#0d3a78; --yellow:#ffd35a; --ink:#172b43; --muted:#55657a;
+  --light:#eef3f8; --pale:#fff5d6; --line:#d3dde9; --green:#1f7a4d; --orange:#c2640f; --red:#b3261e; --white:#fff;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font:17px/1.65 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;color:var(--ink);background:#fff}
+a{color:var(--navy2)}
+h1,h2,h3{line-height:1.15;letter-spacing:-.02em;margin:0 0 .5em}
+h1{font-size:clamp(36px,6vw,68px)}
+h2{font-size:clamp(28px,4vw,42px)}
+h3{font-size:21px}
+p{margin:0 0 1em}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--orange);margin-bottom:12px}
+.on-dark .eyebrow{color:var(--yellow)}
+section{padding:80px 0}
+.btn{display:inline-block;padding:14px 24px;border-radius:8px;font-weight:700;text-decoration:none;border:2px solid transparent;cursor:pointer;font:inherit;font-weight:700}
+.btn-y{background:var(--yellow);color:var(--navy)}
+.btn-y:hover{background:#ffe08a}
+.btn-n{background:var(--navy);color:#fff}
+.btn-n:hover{background:var(--navy2)}
+.btn-o{border-color:rgba(255,255,255,.6);color:#fff}
+.btn-o:hover{background:rgba(255,255,255,.12)}
+.btn[aria-disabled="true"]{opacity:.6;pointer-events:none}
+:focus-visible{outline:3px solid #cb6a00;outline-offset:3px}
+
+/* Header */
+header{position:sticky;top:0;z-index:20;background:var(--navy);color:#fff;box-shadow:0 2px 12px rgba(0,0,0,.18)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 24px;max-width:1120px;margin:0 auto}
+.brand{font-weight:800;font-size:24px;letter-spacing:-.02em;color:#fff;text-decoration:none}
+.brand span{color:var(--yellow)}
+nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+nav a{color:#fff;text-decoration:none;font-size:15px;font-weight:600}
+nav a:hover{color:var(--yellow)}
+@media(max-width:760px){nav ul{display:none}}
+
+/* Hero */
+.hero{background:linear-gradient(135deg,var(--navy) 0%,#0b3f86 100%);color:#fff;padding:96px 0 88px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-120px;top:-80px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(255,211,90,.22),transparent 65%)}
+.hero .wrap{position:relative;z-index:1}
+.hero p.lead{font-size:clamp(18px,2vw,22px);max-width:680px;color:#dbe6f5}
+.hero h1 em{font-style:normal;color:var(--yellow)}
+.cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px}
+.concept{display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:6px 14px;font-size:14px;margin-bottom:22px}
+
+/* Method */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.card{background:var(--light);border-radius:14px;padding:28px;border-top:5px solid var(--navy)}
+.card .num{font-size:14px;font-weight:800;color:var(--orange);letter-spacing:.1em}
+.card.c2{border-top-color:var(--yellow)}
+.card.c3{border-top-color:var(--green)}
+@media(max-width:860px){.cards{grid-template-columns:1fr}}
+
+/* Lab preview */
+.lab{background:var(--pale)}
+.labgrid{display:grid;grid-template-columns:1fr 1.1fr;gap:34px;align-items:start}
+@media(max-width:900px){.labgrid{grid-template-columns:1fr}}
+.panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px;box-shadow:0 6px 24px rgba(8,43,92,.07)}
+.tag{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.08em;padding:4px 10px;border-radius:999px;background:var(--navy);color:#fff;text-transform:uppercase}
+.tag.dummy{background:var(--orange)}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}
+.kpi{background:var(--light);border-radius:10px;padding:14px;text-align:center}
+.kpi b{display:block;font-size:30px;line-height:1.1;color:var(--navy)}
+.kpi span{font-size:13px;color:var(--muted)}
+.bars{margin:6px 0 4px}
+.bar-row{display:grid;grid-template-columns:130px 1fr 44px;align-items:center;gap:10px;margin:8px 0;font-size:14px}
+.bar{height:18px;background:#e3eaf3;border-radius:9px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:9px}
+.note{font-size:13px;color:var(--muted)}
+.choice{display:block;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:10px;padding:14px 16px;margin:10px 0;font:inherit;color:var(--ink);cursor:pointer}
+.choice:hover{border-color:var(--navy2)}
+.choice.right{border-color:var(--green);background:#edf8f1}
+.choice.partial{border-color:var(--orange);background:#fff4e8}
+.choice.wrong{border-color:var(--red);background:#fdeeed}
+.feedback{margin-top:14px;padding:14px 16px;border-radius:10px;background:var(--light);display:none}
+.feedback.show{display:block}
+.brief{display:none;margin-top:18px}
+.brief.show{display:block}
+.brief dl{margin:0}
+.brief dt{font-weight:800;color:var(--navy);margin-top:12px}
+.brief dd{margin:2px 0 0;color:var(--ink)}
+
+/* Journey */
+.journey{background:var(--navy);color:#fff}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:34px}
+.step{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:14px;padding:22px;position:relative}
+.step b.n{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--yellow);color:var(--navy);margin-bottom:10px}
+.step p{color:#dbe6f5;margin:0;font-size:16px}
+@media(max-width:900px){.flow{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.flow{grid-template-columns:1fr}}
+.logic{margin-top:30px;padding:18px 22px;border-radius:12px;background:rgba(255,211,90,.14);border:1px solid rgba(255,211,90,.4);color:#fff7dc}
+
+/* Sessions */
+.sess{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:28px}
+.s{background:#fff;border:2px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:6px}
+.s h3{font-size:18px;margin:0}
+.s small{color:var(--muted);font-size:13px;line-height:1.4}
+.s .st{align-self:flex-start;font-size:11px;font-weight:800;letter-spacing:.08em;padding:3px 9px;border-radius:999px;color:#fff;background:var(--orange)}
+.s.live{border-color:var(--green)}
+.s.live .st{background:var(--green)}
+.s .k{font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--muted);margin-top:6px}
+@media(max-width:1000px){.sess{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.sess{grid-template-columns:1fr}}
+
+/* Audience / benefits */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+@media(max-width:800px){.two{grid-template-columns:1fr}}
+.list{background:var(--light);border-radius:14px;padding:26px}
+.list ul{margin:0;padding-left:20px}
+.list li{margin:8px 0}
+
+/* Feedback */
+.fb{background:var(--pale);text-align:center}
+.fb .wrap{max-width:760px}
+.q{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;margin:22px 0;text-align:left}
+.q li{margin:6px 0}
+
+/* About */
+.about{max-width:760px}
+footer{background:var(--navy);color:#cfdcee;padding:36px 0;font-size:14px}
+footer b{color:#fff}
+footer .wrap{display:grid;gap:8px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a class="brand" href="#top">HSE <span>Lab</span></a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#method">Method</a></li>
+        <li><a href="#lab">Try a lab</a></li>
+        <li><a href="#journey">Journey</a></li>
+        <li><a href="#sessions">Sessions</a></li>
+        <li><a href="#feedback">Feedback</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="hero on-dark">
+  <div class="wrap">
+    <div class="concept">Concept preview &middot; learning content in development</div>
+    <h1>Check the data.<br>Understand the risk.<br><em>Explain the next action.</em></h1>
+    <p class="lead">A practical learning space for HSE professionals. Explore a dummy dashboard, question the evidence, and practise turning everyday HSE records into a clear recommendation, without becoming a programmer.</p>
+    <div class="cta">
+      <a class="btn btn-y" href="#lab">Try the Lab 01 preview</a>
+      <a class="btn btn-o" href="https://dash-board-100.github.io/hse-risk-compass/" target="_blank" rel="noopener noreferrer">Open the demo dashboard</a>
+    </div>
+  </div>
+</section>
+
+<!-- METHOD -->
+<section id="method">
+  <div class="wrap">
+    <div class="eyebrow">The method</div>
+    <h2>A dashboard is the starting point. Your reasoning is the skill.</h2>
+    <p style="max-width:720px;color:var(--muted)">Many HSE reports show numbers. Fewer help people decide what to do next. Every lab follows the same three moves.</p>
+    <div class="cards" style="margin-top:30px">
+      <div class="card">
+        <div class="num">01</div>
+        <h3>Check the data</h3>
+        <p>What does the number actually mean? Look at definitions, missing records, exclusions and the evidence behind a result.</p>
+      </div>
+      <div class="card c2">
+        <div class="num">02</div>
+        <h3>Understand the risk</h3>
+        <p>What deserves attention first? Find patterns, link them to controls, and note what the records cannot tell you.</p>
+      </div>
+      <div class="card c3">
+        <div class="num">03</div>
+        <h3>Explain the next action</h3>
+        <p>What should happen next? Write a short management brief with a finding, a limitation, an action and a decision.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LAB PREVIEW -->
+<section id="lab" class="lab">
+  <div class="wrap">
+    <div class="eyebrow">Lab 01 preview</div>
+    <h2>Actions closed. Risk controlled?</h2>
+    <p style="max-width:720px">You are preparing for a management review. Most corrective actions are marked closed, but similar hazardous events keep appearing. Management asks: <strong>&ldquo;Are our actions working?&rdquo;</strong></p>
+
+    <div class="labgrid" style="margin-top:28px">
+      <div class="panel" aria-label="Dummy dashboard">
+        <span class="tag dummy">Illustrative dummy data</span>
+        <h3 style="margin-top:12px">Corrective action snapshot</h3>
+        <div class="kpis">
+          <div class="kpi"><b>46 / 50</b><span>actions marked closed</span></div>
+          <div class="kpi"><b>12 / 46</b><span>closed with effectiveness verified</span></div>
+          <div class="kpi"><b>4</b><span>similar events in 6 months</span></div>
+        </div>
+        <div class="bars">
+          <div class="bar-row"><span>Closed</span><div class="bar"><i style="width:92%;background:var(--navy2)"></i></div><b>92%</b></div>
+          <div class="bar-row"><span>Effectiveness verified</span><div class="bar"><i style="width:26%;background:var(--green)"></i></div><b>26%</b></div>
+        </div>
+        <p class="note">Percentages: 46 of 50 closed; 12 of 46 closed actions verified. Fictional numbers made up for this exercise. They are not from any real site or company.</p>
+      </div>
+
+      <div class="panel">
+        <span class="tag">Your move</span>
+        <h3 style="margin-top:12px">Which statement is best supported by this data?</h3>
+        <div id="choices" role="group" aria-label="Answer choices">
+          <button type="button" class="choice" data-k="a">A. &ldquo;92% closure shows the risk is under control.&rdquo;</button>
+          <button type="button" class="choice" data-k="b">B. &ldquo;Most closed actions have not been checked for effectiveness, so we cannot say they worked.&rdquo;</button>
+          <button type="button" class="choice" data-k="c">C. &ldquo;Four similar events prove the actions failed.&rdquo;</button>
+        </div>
+        <div id="fb" class="feedback" role="status" aria-live="polite"></div>
+        <div id="brief" class="brief">
+          <h3>Now write your brief</h3>
+          <p class="note" style="margin-bottom:0">Example structure. In a real lab you write your own, then compare.</p>
+          <dl>
+            <dt>Finding</dt><dd>46 of 50 actions are closed. Effectiveness is verified for 12 of the 46.</dd>
+            <dt>Limitation</dt><dd>We cannot yet say whether the four similar events share the same hazard and failed control.</dd>
+            <dt>Next action</dt><dd>Review the repeated events against the original hazard, correction type and verification evidence.</dd>
+            <dt>Decision required</dt><dd>Agree an owner and clear criteria for verifying effectiveness.</dd>
+          </dl>
+        </div>
+        <button type="button" id="reset" class="btn btn-n" style="margin-top:16px;display:none">Try again</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JOURNEY -->
+<section id="journey" class="journey on-dark">
+  <div class="wrap">
+    <div class="eyebrow">How people learn here</div>
+    <h2>From idea, to practice, to evidence you can keep</h2>
+    <p style="max-width:720px;color:#dbe6f5">HSE Lab is designed alongside a companion book on digital HSE skills. The book explains the ideas. The lab is where people practise them.</p>
+    <div class="flow">
+      <div class="step"><b class="n">1</b><h3>Read</h3><p>Get the core idea from a book chapter.</p></div>
+      <div class="step"><b class="n">2</b><h3>Practise</h3><p>Explore a dummy dashboard in a guided lab.</p></div>
+      <div class="step"><b class="n">3</b><h3>Worksheet</h3><p>Complete one worksheet for the session.</p></div>
+      <div class="step"><b class="n">4</b><h3>Brief</h3><p>Write a short management brief you can reuse.</p></div>
+    </div>
+    <div class="logic"><strong>Learning logic:</strong> Knowledge &rarr; Competence &rarr; Evidence &rarr; Visibility. Every session ends with something a participant can actually show.</div>
+  </div>
+</section>
+
+<!-- SESSIONS -->
+<section id="sessions">
+  <div class="wrap">
+    <div class="eyebrow">Planned sessions</div>
+    <h2>One lab and one worksheet for each session</h2>
+    <p style="max-width:720px;color:var(--muted)">Use a single session for a team sharing, or follow the series. Titles and order may change after feedback.</p>
+    <div class="sess">
+      <div class="s"><span class="st">PLANNED</span><h3>Session 0</h3><strong>Where do we start?</strong><small>Digital HSE readiness check.</small><span class="k">YOU KEEP</span><small>Readiness gaps and a 90-day sprint</small></div>
+      <div class="s"><span class="st">PLANNED</span><h3>Session 1</h3><strong>Can we trust the numbers?</strong><small>Data quality checklist.</small><span class="k">YOU KEEP</span><small>A data quality score and your top gaps</small></div>
+      <div class="s live"><span class="st">PREVIEW</span><h3>Session 2</h3><strong>Actions closed. Risk controlled?</strong><small>Dashboard and predictive safety canvas.</small><span class="k">YOU KEEP</span><small>Risk signals and the decision needed</small></div>
+      <div class="s"><span class="st">PLANNED</span><h3>Session 3</h3><strong>Does the dashboard drive decisions?</strong><small>Dashboard design assessment.</small><span class="k">YOU KEEP</span><small>An effectiveness score and a layout plan</small></div>
+      <div class="s"><span class="st">PLANNED</span><h3>Session 4</h3><strong>Where could AI or tech help?</strong><small>Digital opportunity planner.</small><span class="k">YOU KEEP</span><small>A pilot choice and a 90-day plan</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO -->
+<section style="background:var(--light)">
+  <div class="wrap">
+    <div class="eyebrow">Who it is for</div>
+    <h2>Built for people who turn HSE records into decisions</h2>
+    <div class="two" style="margin-top:26px">
+      <div class="list" style="background:#fff">
+        <h3>Who benefits</h3>
+        <ul>
+          <li><strong>Newer HSE staff:</strong> first portfolio evidence.</li>
+          <li><strong>Practitioners:</strong> a way to check data before presenting it.</li>
+          <li><strong>Supervisors and managers:</strong> practice explaining a decision.</li>
+          <li><strong>Facilitators:</strong> a ready lab and worksheet for a sharing session.</li>
+        </ul>
+      </div>
+      <div class="list" style="background:#fff">
+        <h3>What makes it different</h3>
+        <ul>
+          <li>Starts with a question, not a software menu.</li>
+          <li>Separates &ldquo;action completed&rdquo; from &ldquo;effectiveness verified&rdquo;.</li>
+          <li>Uses imperfect, clearly labelled dummy data.</li>
+          <li>Ends with a brief, not just another chart.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEEDBACK -->
+<section id="feedback" class="fb">
+  <div class="wrap">
+    <div class="eyebrow">Help shape it</div>
+    <h2>Would this be useful to you?</h2>
+    <p>This is a concept preview. Your reaction decides what gets built first.</p>
+    <div class="q">
+      <strong>A few quick questions:</strong>
+      <ol>
+        <li>Which session would you attend first?</li>
+        <li>Would you prefer a live workshop, a recorded lesson, or a printable worksheet?</li>
+        <li>What HSE data question do you struggle with most?</li>
+      </ol>
+    </div>
+    <a id="fbBtn" class="btn btn-n" href="#feedback" aria-disabled="true">Feedback form coming soon</a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section>
+  <div class="wrap about">
+    <div class="eyebrow">About</div>
+    <h2>Built by a practitioner</h2>
+    <p>I&rsquo;m Azhara, an HSE practitioner interested in making everyday data more useful for decisions. HSE Lab brings together dashboards, structured thinking and clear management communication.</p>
+    <p><strong>Practice safely.</strong> Use synthetic or explicitly authorized data only. Please do not share confidential records, personal information or internal incident details.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><b>HSE Lab</b> &middot; Check the data. Understand the risk. Explain the next action.</div>
+    <div>Concept preview with illustrative dummy data. Educational content only. It does not replace site-specific risk assessment, legal requirements or competent professional review.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // Paste your feedback form link between the quotes (for example a Microsoft Forms link). Leave empty to show "coming soon".
+  var FEEDBACK_URL = "";
+
+  var btn = document.getElementById("fbBtn");
+  if (FEEDBACK_URL) {
+    btn.href = FEEDBACK_URL;
+    btn.target = "_blank";
+    btn.rel = "noopener noreferrer";
+    btn.textContent = "Share your feedback";
+    btn.removeAttribute("aria-disabled");
+  }
+
+  var msgs = {
+    a: {cls:"wrong", text:"<strong>Not supported.</strong> Closure shows tasks were completed. It does not show that the risk is controlled. Only 12 of the 46 closed actions have verified effectiveness."},
+    b: {cls:"right", text:"<strong>Best supported.</strong> The data shows completion (46 of 50) but effectiveness is verified for only 12 of 46. Saying the actions &ldquo;worked&rdquo; would go beyond the evidence."},
+    c: {cls:"partial", text:"<strong>Too strong.</strong> Repeated events are a signal to investigate, but you still need to check that they share the same hazard and failed control before concluding the actions failed."}
+  };
+
+  var choices = document.querySelectorAll("#choices .choice");
+  var fb = document.getElementById("fb");
+  var brief = document.getElementById("brief");
+  var reset = document.getElementById("reset");
+
+  function clear(){
+    choices.forEach(function(c){ c.classList.remove("right","partial","wrong"); c.disabled = false; });
+    fb.className = "feedback"; fb.innerHTML = "";
+    brief.classList.remove("show");
+    reset.style.display = "none";
+  }
+
+  choices.forEach(function(c){
+    c.addEventListener("click", function(){
+      clear();
+      var m = msgs[c.getAttribute("data-k")];
+      c.classList.add(m.cls);
+      fb.innerHTML = m.text;
+      fb.classList.add("show");
+      brief.classList.add("show");
+      reset.style.display = "inline-block";
+    });
+  });
+  reset.addEventListener("click", clear);
+})();
+</script>
+</body>
+</html>
