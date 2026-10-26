@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>HSE Lab | Check the data. Understand the risk. Explain the next action.</title>
-<meta name="description" content="HSE Lab is a concept for practical HSE learning: guided decision labs, one worksheet per session, and a management brief you can keep.">
+<meta name="description" content="HSE Lab is a concept for practical HSE learning: guided decision labs, an interactive decision tool, one worksheet per session, and a management brief you can keep.">
 <style>
 :root{
   --navy:#082b5c; --navy2:#0d3a78; --yellow:#ffd35a; --ink:#172b43; --muted:#55657a;
@@ -30,6 +30,9 @@ section{padding:80px 0}
 .btn-n:hover{background:var(--navy2)}
 .btn-o{border-color:rgba(255,255,255,.6);color:#fff}
 .btn-o:hover{background:rgba(255,255,255,.12)}
+.btn-l{background:#fff;color:var(--navy);border-color:var(--navy)}
+.btn-l:hover{background:var(--light)}
+.btn-s{padding:9px 16px;font-size:15px}
 .btn[aria-disabled="true"]{opacity:.6;pointer-events:none}
 :focus-visible{outline:3px solid #cb6a00;outline-offset:3px}
 
@@ -41,7 +44,7 @@ header{position:sticky;top:0;z-index:20;background:var(--navy);color:#fff;box-sh
 nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
 nav a{color:#fff;text-decoration:none;font-size:15px;font-weight:600}
 nav a:hover{color:var(--yellow)}
-@media(max-width:760px){nav ul{display:none}}
+@media(max-width:860px){nav ul{display:none}}
 
 /* Hero */
 .hero{background:linear-gradient(135deg,var(--navy) 0%,#0b3f86 100%);color:#fff;padding:96px 0 88px;position:relative;overflow:hidden}
@@ -89,6 +92,62 @@ nav a:hover{color:var(--yellow)}
 .brief dt{font-weight:800;color:var(--navy);margin-top:12px}
 .brief dd{margin:2px 0 0;color:var(--ink)}
 
+/* Decision tool */
+.tool{background:var(--light)}
+.privacy{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-left:5px solid var(--green);border-radius:10px;padding:12px 16px;margin:18px 0 28px;font-size:15px}
+.toolgrid{display:grid;grid-template-columns:minmax(300px,.85fr) 1.4fr;gap:28px;align-items:start}
+@media(max-width:980px){.toolgrid{grid-template-columns:1fr}}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+fieldset.fs{border:1px solid var(--line);border-radius:12px;padding:14px 16px 4px;margin:0 0 16px;background:#fff}
+fieldset.fs legend{font-weight:800;color:var(--navy);padding:0 8px;font-size:15px}
+.f{margin:0 0 12px}
+.f label{display:block;font-size:14px;font-weight:600;line-height:1.35}
+.f small{display:block;color:var(--muted);font-size:12.5px;line-height:1.35}
+.f input,.f select{width:100%;padding:9px 10px;border:2px solid var(--line);border-radius:8px;font:inherit;font-size:16px;margin-top:5px;background:#fff;color:var(--ink)}
+.f input.bad{border-color:var(--red);background:#fdeeed}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:420px){.row2{grid-template-columns:1fr}}
+details.adv{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin-bottom:16px}
+details.adv summary{cursor:pointer;font-weight:700;color:var(--navy)}
+details.adv .row2{margin-top:12px}
+.empty{background:#fff;border:2px dashed var(--line);border-radius:14px;padding:34px;text-align:center;color:var(--muted)}
+.rcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:18px;box-shadow:0 4px 18px rgba(8,43,92,.06)}
+.rcard h3{margin-bottom:10px}
+.msg{padding:10px 14px;border-radius:8px;margin:8px 0;font-size:15px}
+.msg.error{background:#fdeeed;border-left:4px solid var(--red)}
+.msg.warn{background:#fff4e8;border-left:4px solid var(--orange)}
+.msg.info{background:var(--light);border-left:4px solid var(--navy2)}
+.kgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media(max-width:700px){.kgrid{grid-template-columns:1fr 1fr}}
+.k{background:var(--light);border-radius:10px;padding:12px;text-align:center}
+.k b{display:block;font-size:24px;line-height:1.15;color:var(--navy)}
+.k span{font-size:12.5px;color:var(--muted);line-height:1.3;display:block}
+.k.na b{color:#8a97a8;font-size:20px}
+.status{font-size:17px;font-weight:600;padding:14px 16px;border-radius:10px;background:var(--pale);border:1px solid #f0dc9c}
+.meter{margin:12px 0}
+.meter .lbl{display:flex;justify-content:space-between;font-size:14px;font-weight:600;gap:8px}
+.meter .lbl span:last-child{color:var(--muted);font-weight:500;text-align:right}
+.track{position:relative;height:16px;background:#e3eaf3;border-radius:8px;margin-top:5px}
+.fill{position:absolute;left:0;top:0;bottom:0;border-radius:8px}
+.fill.ok{background:var(--green)}
+.fill.gap{background:var(--orange)}
+.tick{position:absolute;top:-4px;bottom:-4px;width:3px;background:var(--navy);border-radius:2px}
+.sig{border-left:6px solid var(--orange);background:#fff;border-radius:12px;border-top:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:18px 20px;margin-bottom:14px}
+.sig.high{border-left-color:var(--red)}
+.sig.medium{border-left-color:var(--orange)}
+.sig.watch{border-left-color:#d4a017}
+.sig h4{margin:0 0 6px;font-size:18px;line-height:1.25}
+.sig .sev{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#fff;border-radius:999px;padding:3px 10px;margin-right:8px;vertical-align:middle}
+.sev.high{background:var(--red)}
+.sev.medium{background:var(--orange)}
+.sev.watch{background:#8a6a00}
+.sig dl{margin:10px 0 0;font-size:15px}
+.sig dt{font-weight:800;color:var(--navy);margin-top:8px;font-size:13px;letter-spacing:.04em;text-transform:uppercase}
+.sig dd{margin:2px 0 0}
+textarea.briefbox{width:100%;min-height:210px;padding:12px;border:2px solid var(--line);border-radius:10px;font:15px/1.5 "Segoe UI",system-ui,sans-serif;color:var(--ink);background:#fbfcfe;resize:vertical}
+.copied{margin-left:10px;color:var(--green);font-weight:700;font-size:14px}
+.sr{position:absolute;left:-9999px}
+
 /* Journey */
 .journey{background:var(--navy);color:#fff}
 .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:34px}
@@ -107,7 +166,7 @@ nav a:hover{color:var(--yellow)}
 .s .st{align-self:flex-start;font-size:11px;font-weight:800;letter-spacing:.08em;padding:3px 9px;border-radius:999px;color:#fff;background:var(--orange)}
 .s.live{border-color:var(--green)}
 .s.live .st{background:var(--green)}
-.s .k{font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--muted);margin-top:6px}
+.s .k2{font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--muted);margin-top:6px}
 @media(max-width:1000px){.sess{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.sess{grid-template-columns:1fr}}
 
@@ -130,6 +189,7 @@ footer{background:var(--navy);color:#cfdcee;padding:36px 0;font-size:14px}
 footer b{color:#fff}
 footer .wrap{display:grid;gap:8px}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+@media print{header,.hero,.toolbar,.fb,footer{display:none}section{padding:24px 0}}
 </style>
 </head>
 <body>
@@ -140,10 +200,11 @@ footer .wrap{display:grid;gap:8px}
     <nav aria-label="Main">
       <ul>
         <li><a href="#method">Method</a></li>
-        <li><a href="#lab">Try a lab</a></li>
+        <li><a href="#lab">Lab 01</a></li>
+        <li><a href="#tool">Decision tool</a></li>
         <li><a href="#journey">Journey</a></li>
         <li><a href="#sessions">Sessions</a></li>
-        <li><a href="#feedback">Feedback</a></li>
+        <li><a href="#feedback">Stay informed</a></li>
       </ul>
     </nav>
   </div>
@@ -156,9 +217,10 @@ footer .wrap{display:grid;gap:8px}
   <div class="wrap">
     <div class="concept">Concept preview &middot; learning content in development</div>
     <h1>Check the data.<br>Understand the risk.<br><em>Explain the next action.</em></h1>
-    <p class="lead">A practical learning space for HSE professionals. Explore a dummy dashboard, question the evidence, and practise turning everyday HSE records into a clear recommendation, without becoming a programmer.</p>
+    <p class="lead">A professional learning space for HSE practitioners. Explore a dummy dashboard, test the evidence, and practise turning routine HSE records into a clear, well-reasoned recommendation. No programming is required.</p>
     <div class="cta">
-      <a class="btn btn-y" href="#lab">Try the Lab 01 preview</a>
+      <a class="btn btn-y" href="#tool">Open the decision tool</a>
+      <a class="btn btn-o" href="#lab">View the Lab 01 preview</a>
       <a class="btn btn-o" href="https://dash-board-100.github.io/hse-risk-compass/" target="_blank" rel="noopener noreferrer">Open the demo dashboard</a>
     </div>
   </div>
@@ -223,7 +285,7 @@ footer .wrap{display:grid;gap:8px}
         </div>
         <div id="fb" class="feedback" role="status" aria-live="polite"></div>
         <div id="brief" class="brief">
-          <h3>Now write your brief</h3>
+          <h3>Write the management brief</h3>
           <p class="note" style="margin-bottom:0">Example structure. In a real lab you write your own, then compare.</p>
           <dl>
             <dt>Finding</dt><dd>46 of 50 actions are closed. Effectiveness is verified for 12 of the 46.</dd>
@@ -232,8 +294,101 @@ footer .wrap{display:grid;gap:8px}
             <dt>Decision required</dt><dd>Agree an owner and clear criteria for verifying effectiveness.</dd>
           </dl>
         </div>
-        <button type="button" id="reset" class="btn btn-n" style="margin-top:16px;display:none">Try again</button>
+        <button type="button" id="reset" class="btn btn-n" style="margin-top:16px;display:none">Reset</button>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- DECISION TOOL -->
+<section id="tool" class="tool">
+  <div class="wrap">
+    <div class="eyebrow">Interactive decision tool</div>
+    <h2>From your numbers to a priority</h2>
+    <p style="max-width:760px">Enter your lagging results (what already happened) and leading indicators (what you do to prevent it). The tool checks your data, shows where the biggest gaps are, and suggests what to investigate or invest in first. Then it drafts a management brief.</p>
+
+    <div class="privacy" role="note">
+      <span aria-hidden="true" style="font-size:22px">&#128274;</span>
+      <div><strong>Your numbers stay on your device.</strong> This page does not send, save or store anything. Closing or refreshing the page clears it. Please use <strong>dummy, rounded or fully authorised figures</strong>. Do not enter confidential or personal information.</div>
+    </div>
+
+    <div class="toolgrid">
+      <!-- INPUTS -->
+      <div>
+        <div class="toolbar">
+          <button type="button" id="t_example" class="btn btn-n btn-s">Load dummy example</button>
+          <button type="button" id="t_clear" class="btn btn-l btn-s">Clear all</button>
+        </div>
+
+        <fieldset class="fs">
+          <legend>1. Context</legend>
+          <div class="f">
+            <label for="t_hours">Hours worked in the period</label>
+            <small>Total hours for the people you count, for the same period as the numbers below.</small>
+            <input id="t_hours" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 480000">
+          </div>
+          <div class="f">
+            <label for="t_base">Rate base</label>
+            <select id="t_base">
+              <option value="200000">per 200,000 hours</option>
+              <option value="1000000">per 1,000,000 hours</option>
+            </select>
+          </div>
+        </fieldset>
+
+        <fieldset class="fs">
+          <legend>2. Lagging results (what happened)</legend>
+          <div class="row2">
+            <div class="f"><label for="t_recordable">Recordable injuries</label><small>Include lost-time cases.</small><input id="t_recordable" type="number" inputmode="numeric" min="0" step="1"></div>
+            <div class="f"><label for="t_lti">Lost-time injuries</label><small>A subset of recordable.</small><input id="t_lti" type="number" inputmode="numeric" min="0" step="1"></div>
+          </div>
+          <div class="row2">
+            <div class="f"><label for="t_repeats">Repeat events</label><small>Same hazard or failed control.</small><input id="t_repeats" type="number" inputmode="numeric" min="0" step="1"></div>
+            <div class="f"><label for="t_targetTrir">Your target rate (optional)</label><small>Target for recordable rate.</small><input id="t_targetTrir" type="number" inputmode="decimal" min="0" step="any"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="fs">
+          <legend>3. Leading indicators (prevention)</legend>
+          <div class="row2">
+            <div class="f"><label for="t_hazRep">Hazards reported</label><small>Hazards and near misses.</small><input id="t_hazRep" type="number" inputmode="numeric" min="0" step="1"></div>
+            <div class="f"><label for="t_hazClosed">Hazards closed</label><small>Of those reported.</small><input id="t_hazClosed" type="number" inputmode="numeric" min="0" step="1"></div>
+          </div>
+          <div class="row2">
+            <div class="f"><label for="t_actTotal">Corrective actions</label><small>Total in the period.</small><input id="t_actTotal" type="number" inputmode="numeric" min="0" step="1"></div>
+            <div class="f"><label for="t_actClosed">Actions closed</label><small>Marked complete.</small><input id="t_actClosed" type="number" inputmode="numeric" min="0" step="1"></div>
+          </div>
+          <div class="row2">
+            <div class="f"><label for="t_actVerified">Closed &amp; verified effective</label><small>Checked that it worked.</small><input id="t_actVerified" type="number" inputmode="numeric" min="0" step="1"></div>
+            <div class="f"><label for="t_actOverdue">Open actions past due</label><small>Still open, due date passed.</small><input id="t_actOverdue" type="number" inputmode="numeric" min="0" step="1"></div>
+          </div>
+          <div class="row2">
+            <div class="f"><label for="t_inspPlan">Inspections planned</label><input id="t_inspPlan" type="number" inputmode="numeric" min="0" step="1"></div>
+            <div class="f"><label for="t_inspDone">Inspections completed</label><input id="t_inspDone" type="number" inputmode="numeric" min="0" step="1"></div>
+          </div>
+          <div class="f">
+            <label for="t_adminClosed">Closed actions relying only on training, reminders or signage</label>
+            <small>Optional. Helps test whether stronger controls were considered.</small>
+            <input id="t_adminClosed" type="number" inputmode="numeric" min="0" step="1">
+          </div>
+        </fieldset>
+
+        <details class="adv">
+          <summary>Adjust thresholds (illustrative, set your own)</summary>
+          <p class="note" style="margin-top:10px">These are not industry standards. They are starting points for discussion. Change them to match your own targets.</p>
+          <div class="row2">
+            <div class="f"><label for="t_close">Closure target (%)</label><input id="t_close" type="number" min="1" max="100" step="1" placeholder="90"></div>
+            <div class="f"><label for="t_eff">Verified-effective target (%)</label><input id="t_eff" type="number" min="1" max="100" step="1" placeholder="70"></div>
+            <div class="f"><label for="t_overdue">Max past-due share of open actions (%)</label><input id="t_overdue" type="number" min="0" max="100" step="1" placeholder="10"></div>
+            <div class="f"><label for="t_insp">Inspection completion target (%)</label><input id="t_insp" type="number" min="1" max="100" step="1" placeholder="90"></div>
+            <div class="f"><label for="t_rep">Min. hazard reports per recordable injury</label><input id="t_rep" type="number" min="1" step="1" placeholder="10"></div>
+            <div class="f"><label for="t_admin">Max share of closed actions that are training/signage only (%)</label><input id="t_admin" type="number" min="1" max="100" step="1" placeholder="60"></div>
+          </div>
+        </details>
+      </div>
+
+      <!-- RESULTS -->
+      <div id="t_results" aria-live="polite"></div>
     </div>
   </div>
 </section>
@@ -259,13 +414,13 @@ footer .wrap{display:grid;gap:8px}
   <div class="wrap">
     <div class="eyebrow">Planned sessions</div>
     <h2>One lab and one worksheet for each session</h2>
-    <p style="max-width:720px;color:var(--muted)">Use a single session for a team sharing, or follow the series. Titles and order may change after feedback.</p>
+    <p style="max-width:720px;color:var(--muted)">Each session can be used on its own for a team sharing, or followed as a series. Titles and order may change as the content develops.</p>
     <div class="sess">
-      <div class="s"><span class="st">PLANNED</span><h3>Session 0</h3><strong>Where do we start?</strong><small>Digital HSE readiness check.</small><span class="k">YOU KEEP</span><small>Readiness gaps and a 90-day sprint</small></div>
-      <div class="s"><span class="st">PLANNED</span><h3>Session 1</h3><strong>Can we trust the numbers?</strong><small>Data quality checklist.</small><span class="k">YOU KEEP</span><small>A data quality score and your top gaps</small></div>
-      <div class="s live"><span class="st">PREVIEW</span><h3>Session 2</h3><strong>Actions closed. Risk controlled?</strong><small>Dashboard and predictive safety canvas.</small><span class="k">YOU KEEP</span><small>Risk signals and the decision needed</small></div>
-      <div class="s"><span class="st">PLANNED</span><h3>Session 3</h3><strong>Does the dashboard drive decisions?</strong><small>Dashboard design assessment.</small><span class="k">YOU KEEP</span><small>An effectiveness score and a layout plan</small></div>
-      <div class="s"><span class="st">PLANNED</span><h3>Session 4</h3><strong>Where could AI or tech help?</strong><small>Digital opportunity planner.</small><span class="k">YOU KEEP</span><small>A pilot choice and a 90-day plan</small></div>
+      <div class="s"><span class="st">PLANNED</span><h3>Session 0</h3><strong>Where do we start?</strong><small>Digital HSE readiness check.</small><span class="k2">OUTPUT</span><small>Readiness gaps and a 90-day sprint</small></div>
+      <div class="s"><span class="st">PLANNED</span><h3>Session 1</h3><strong>Can we trust the numbers?</strong><small>Data quality checklist.</small><span class="k2">OUTPUT</span><small>A data quality score and your top gaps</small></div>
+      <div class="s live"><span class="st">PREVIEW</span><h3>Session 2</h3><strong>Actions closed. Risk controlled?</strong><small>Dashboard and predictive safety canvas, with the decision tool above.</small><span class="k2">OUTPUT</span><small>Risk signals and the decision needed</small></div>
+      <div class="s"><span class="st">PLANNED</span><h3>Session 3</h3><strong>Does the dashboard drive decisions?</strong><small>Dashboard design assessment.</small><span class="k2">OUTPUT</span><small>An effectiveness score and a layout plan</small></div>
+      <div class="s"><span class="st">PLANNED</span><h3>Session 4</h3><strong>Where could AI or tech help?</strong><small>Digital opportunity planner.</small><span class="k2">OUTPUT</span><small>A pilot choice and a 90-day plan</small></div>
     </div>
   </div>
 </section>
@@ -273,20 +428,20 @@ footer .wrap{display:grid;gap:8px}
 <!-- WHO -->
 <section style="background:var(--light)">
   <div class="wrap">
-    <div class="eyebrow">Who it is for</div>
-    <h2>Built for people who turn HSE records into decisions</h2>
+    <div class="eyebrow">Intended audience</div>
+    <h2>For practitioners who turn HSE records into decisions</h2>
     <div class="two" style="margin-top:26px">
       <div class="list" style="background:#fff">
-        <h3>Who benefits</h3>
+        <h3>Who it supports</h3>
         <ul>
-          <li><strong>Newer HSE staff:</strong> first portfolio evidence.</li>
-          <li><strong>Practitioners:</strong> a way to check data before presenting it.</li>
-          <li><strong>Supervisors and managers:</strong> practice explaining a decision.</li>
-          <li><strong>Facilitators:</strong> a ready lab and worksheet for a sharing session.</li>
+          <li><strong>Early-career HSE staff:</strong> evidence of practical skills.</li>
+          <li><strong>Practitioners:</strong> a method for checking data before presenting it.</li>
+          <li><strong>Supervisors and managers:</strong> practice in explaining a decision.</li>
+          <li><strong>Facilitators:</strong> a structured lab and worksheet for a sharing session.</li>
         </ul>
       </div>
       <div class="list" style="background:#fff">
-        <h3>What makes it different</h3>
+        <h3>Approach</h3>
         <ul>
           <li>Starts with a question, not a software menu.</li>
           <li>Separates &ldquo;action completed&rdquo; from &ldquo;effectiveness verified&rdquo;.</li>
@@ -301,18 +456,20 @@ footer .wrap{display:grid;gap:8px}
 <!-- FEEDBACK -->
 <section id="feedback" class="fb">
   <div class="wrap">
-    <div class="eyebrow">Help shape it</div>
-    <h2>Would this be useful to you?</h2>
-    <p>This is a concept preview. Your reaction decides what gets built first.</p>
+    <div class="eyebrow">Stay informed</div>
+    <h2>Register your interest and share your views</h2>
+    <p>HSE Lab is at concept stage. Register your email to receive updates and invitations to sessions, and tell us which topics would be most useful in your work.</p>
     <div class="q">
-      <strong>A few quick questions:</strong>
+      <strong>The form asks:</strong>
       <ol>
         <li>Which session would you attend first?</li>
+        <li>Was the decision tool useful? What number or question was missing?</li>
         <li>Would you prefer a live workshop, a recorded lesson, or a printable worksheet?</li>
         <li>What HSE data question do you struggle with most?</li>
       </ol>
     </div>
-    <a id="fbBtn" class="btn btn-n" href="#feedback" aria-disabled="true">Feedback form coming soon</a>
+    <a id="fbBtn" class="btn btn-n" href="#feedback" aria-disabled="true">Registration form coming soon</a>
+    <p class="note" style="margin-top:16px">Your email address is used only to send updates about HSE Lab and invitations to sessions. Please do not enter confidential or company information in the form.</p>
   </div>
 </section>
 
@@ -320,7 +477,7 @@ footer .wrap{display:grid;gap:8px}
 <section>
   <div class="wrap about">
     <div class="eyebrow">About</div>
-    <h2>Built by a practitioner</h2>
+    <h2>About the author</h2>
     <p>I&rsquo;m Azhara, an HSE practitioner interested in making everyday data more useful for decisions. HSE Lab brings together dashboards, structured thinking and clear management communication.</p>
     <p><strong>Practice safely.</strong> Use synthetic or explicitly authorized data only. Please do not share confidential records, personal information or internal incident details.</p>
   </div>
@@ -331,21 +488,21 @@ footer .wrap{display:grid;gap:8px}
 <footer>
   <div class="wrap">
     <div><b>HSE Lab</b> &middot; Check the data. Understand the risk. Explain the next action.</div>
-    <div>Concept preview with illustrative dummy data. Educational content only. It does not replace site-specific risk assessment, legal requirements or competent professional review.</div>
+    <div>Concept preview with illustrative dummy data. The decision tool is a thinking aid: it highlights where to look first using your own numbers and adjustable thresholds. It cannot see event severity, site context or cost, and it does not replace site-specific risk assessment, legal requirements or competent professional review.</div>
   </div>
 </footer>
 
 <script>
 (function(){
-  // Paste your feedback form link between the quotes (for example a Microsoft Forms link). Leave empty to show "coming soon".
-  var FEEDBACK_URL = "";
+  // Link to the registration and feedback form. Leave empty to show "coming soon".
+  var FEEDBACK_URL = "https://docs.google.com/forms/d/e/1FAIpQLScMgwT3eIQEYXLfvDXM9vfobY_ZS-lBQM0cv2uvjfYR37WZHw/viewform?usp=publish-editor";
 
   var btn = document.getElementById("fbBtn");
   if (FEEDBACK_URL) {
     btn.href = FEEDBACK_URL;
     btn.target = "_blank";
     btn.rel = "noopener noreferrer";
-    btn.textContent = "Share your feedback";
+    btn.textContent = "Register interest and share feedback";
     btn.removeAttribute("aria-disabled");
   }
 
@@ -379,6 +536,366 @@ footer .wrap{display:grid;gap:8px}
     });
   });
   reset.addEventListener("click", clear);
+})();
+</script>
+
+<script>
+/* HSE Lab decision tool. Runs entirely in the browser: no network calls, no storage. */
+(function(){
+  "use strict";
+
+  var NUM_FIELDS = ["hours","recordable","lti","repeats","targetTrir","hazRep","hazClosed","actTotal","actClosed","actVerified","actOverdue","inspPlan","inspDone","adminClosed"];
+  var INT_FIELDS = ["recordable","lti","repeats","hazRep","hazClosed","actTotal","actClosed","actVerified","actOverdue","inspPlan","inspDone","adminClosed"];
+  var LABELS = {hours:"Hours worked",recordable:"Recordable injuries",lti:"Lost-time injuries",repeats:"Repeat events",targetTrir:"Target rate",hazRep:"Hazards reported",hazClosed:"Hazards closed",actTotal:"Corrective actions",actClosed:"Actions closed",actVerified:"Closed & verified effective",actOverdue:"Open actions past due",inspPlan:"Inspections planned",inspDone:"Inspections completed",adminClosed:"Training/signage-only closed actions"};
+  var THR = [
+    {id:"close",def:90,min:1,max:100,label:"Closure target"},
+    {id:"eff",def:70,min:1,max:100,label:"Verified-effective target"},
+    {id:"overdue",def:10,min:0,max:100,label:"Max past-due share"},
+    {id:"insp",def:90,min:1,max:100,label:"Inspection completion target"},
+    {id:"rep",def:10,min:1,max:100000,label:"Min. reports per recordable"},
+    {id:"admin",def:60,min:1,max:100,label:"Max training/signage-only share"}
+  ];
+  var EXAMPLE = {hours:480000,recordable:6,lti:2,repeats:4,targetTrir:2,hazRep:120,hazClosed:84,actTotal:50,actClosed:46,actVerified:12,actOverdue:2,inspPlan:80,inspDone:62,adminClosed:31};
+
+  function $(id){ return document.getElementById(id); }
+  function esc(s){ return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
+  function P(x){ return Math.round(x*100)+"%"; }
+  function R(x){ return x.toFixed(2); }
+  function ratio(a,b){ return (a!==null && b!==null && b>0) ? a/b : null; }
+
+  /* ---------- read inputs ---------- */
+  function readInputs(){
+    var v = {}, bad = [];
+    NUM_FIELDS.forEach(function(f){
+      var el = $("t_"+f); el.classList.remove("bad");
+      var s = el.value.trim();
+      if (s === "") { v[f] = null; return; }
+      var n = Number(s);
+      var notInt = INT_FIELDS.indexOf(f) > -1 && Math.floor(n) !== n;
+      if (!isFinite(n) || n < 0 || notInt) { v[f] = null; bad.push(f); el.classList.add("bad"); return; }
+      v[f] = n;
+    });
+    v.base = Number($("t_base").value) === 1000000 ? 1000000 : 200000;
+    var t = {};
+    THR.forEach(function(h){
+      var el = $("t_"+h.id); el.classList.remove("bad");
+      var s = el.value.trim();
+      if (s === "") { t[h.id] = h.def; return; }
+      var n = Number(s);
+      if (!isFinite(n) || n < h.min || n > h.max) { t[h.id] = h.def; bad.push(h.id); el.classList.add("bad"); return; }
+      t[h.id] = n;
+    });
+    return {v:v, t:t, bad:bad};
+  }
+
+  /* ---------- analysis (pure) ---------- */
+  function analyze(v, tRaw){
+    var t = {
+      close: tRaw.close/100, eff: tRaw.eff/100, overdue: tRaw.overdue/100,
+      insp: tRaw.insp/100, rep: tRaw.rep, admin: tRaw.admin/100
+    };
+    var checks = [];
+    var m = {trir:null, ltir:null, hazClose:null, actClose:null, eff:null, overdue:null, insp:null, rpr:null, admin:null, open:null};
+
+    function err(msg){ checks.push({level:"error", text:msg}); }
+    function warn(msg){ checks.push({level:"warn", text:msg}); }
+
+    // Rates
+    if (v.hours !== null && v.hours <= 0) err("Hours worked must be greater than zero to calculate injury rates.");
+    var hoursOk = v.hours !== null && v.hours > 0;
+    var injOk = true;
+    if (v.recordable !== null && v.lti !== null && v.lti > v.recordable) { err("Lost-time injuries cannot exceed recordable injuries (lost-time is a subset). Injury rates were skipped."); injOk = false; }
+    if (hoursOk && injOk) {
+      if (v.recordable !== null) m.trir = v.recordable * v.base / v.hours;
+      if (v.lti !== null) m.ltir = v.lti * v.base / v.hours;
+    }
+
+    // Hazards
+    if (v.hazRep !== null && v.hazClosed !== null) {
+      if (v.hazClosed > v.hazRep) err("Hazards closed cannot exceed hazards reported. Hazard closure was skipped.");
+      else m.hazClose = ratio(v.hazClosed, v.hazRep);
+    }
+
+    // Actions
+    var actOk = true;
+    if (v.actTotal !== null && v.actClosed !== null) {
+      if (v.actClosed > v.actTotal) { err("Actions closed cannot exceed total actions. Action metrics were skipped."); actOk = false; }
+      else { m.actClose = ratio(v.actClosed, v.actTotal); m.open = v.actTotal - v.actClosed; }
+    }
+    if (actOk && v.actClosed !== null && v.actVerified !== null) {
+      if (v.actVerified > v.actClosed) err("Verified-effective actions cannot exceed closed actions. That metric was skipped.");
+      else m.eff = ratio(v.actVerified, v.actClosed);
+    }
+    if (actOk && m.open !== null && v.actOverdue !== null) {
+      if (v.actOverdue > m.open) err("Past-due actions cannot exceed open actions (total minus closed). That metric was skipped.");
+      else if (m.open > 0) {
+        m.overdue = v.actOverdue / m.open;
+        if (m.open < 10) warn("The past-due share is based on only " + m.open + " open action" + (m.open === 1 ? "" : "s") + ". Read it with the count, not just the percentage.");
+      }
+    }
+    if (actOk && v.actClosed !== null && v.adminClosed !== null) {
+      if (v.adminClosed > v.actClosed) err("Training/signage-only actions cannot exceed closed actions. That metric was skipped.");
+      else m.admin = ratio(v.adminClosed, v.actClosed);
+    }
+
+    // Inspections
+    if (v.inspPlan !== null && v.inspDone !== null) {
+      if (v.inspDone > v.inspPlan) err("Inspections completed cannot exceed inspections planned. That metric was skipped.");
+      else m.insp = ratio(v.inspDone, v.inspPlan);
+    }
+
+    // Reporting depth
+    if (v.hazRep !== null && v.recordable !== null && v.recordable > 0) m.rpr = v.hazRep / v.recordable;
+
+    // Small-count caution
+    if (v.recordable !== null && v.recordable > 0 && v.recordable < 10) warn("With only " + v.recordable + " recordable case" + (v.recordable === 1 ? "" : "s") + ", injury rates can swing widely. Read the rate together with the count.");
+    if (v.hazRep !== null && v.hazClosed !== null && v.hazClosed > v.hazRep) { /* already flagged */ }
+
+    var sigs = [];
+    var rep = v.repeats !== null ? v.repeats : 0;
+    function add(o){ sigs.push(o); }
+
+    if (m.eff !== null && m.eff < t.eff) {
+      add({id:"eff", leading:true, score:(t.eff-m.eff)/t.eff + (rep>0?0.25:0),
+        title:"Closed actions are not being verified as effective",
+        evidence: v.actVerified+" of "+v.actClosed+" closed actions are verified effective ("+P(m.eff)+") against your "+P(t.eff)+" threshold."+(rep>0?" "+rep+" repeat event"+(rep===1?" was":"s were")+" also reported.":""),
+        why:"A closed action shows work was finished. It does not show the control reduced the risk. Without verification, closure can overstate how much risk is controlled.",
+        invest:"Time and ownership for effectiveness checks, and clear success criteria written when each action is created.",
+        ask:"What would we expect to see if this action worked, and who checks it, and when?"});
+    }
+    if (m.overdue !== null && m.overdue > t.overdue) {
+      add({id:"overdue", leading:true, score:(m.overdue-t.overdue)/Math.max(0.0001,1-t.overdue),
+        title:"Open actions are slipping past their due dates",
+        evidence: v.actOverdue+" of "+m.open+" open actions are past due ("+P(m.overdue)+") against your "+P(t.overdue)+" limit.",
+        why:"Late actions usually point to unclear ownership, limited capacity, or work that is blocked and waiting for a decision.",
+        invest:"An escalation routine, owner capacity, realistic due dates, and a quick decision path for blocked actions that need budget or approval.",
+        ask:"Which overdue actions are blocked, and what decision or resource would unblock them?"});
+    }
+    if (m.actClose !== null && m.actClose >= t.close && rep > 0) {
+      add({id:"repeat", leading:false, score:Math.min(1,0.4+0.1*rep),
+        title:"Closure looks healthy, but similar events keep happening",
+        evidence: "Action closure is "+P(m.actClose)+" (target "+P(t.close)+"), yet "+rep+" repeat event"+(rep===1?" was":"s were")+" reported.",
+        why:"High closure with repeat events suggests actions may be completed without reaching the root cause or the failed control.",
+        invest:"Investigation quality and root-cause review, and possibly a stronger control for the repeated hazard.",
+        ask:"Are the repeat events really the same hazard and the same failed control, and did the earlier action address that control?"});
+    }
+    if (m.actClose !== null && m.actClose < t.close) {
+      add({id:"close", leading:true, score:(t.close-m.actClose)/t.close + (rep>0?0.25:0),
+        title:"Corrective action closure is below target",
+        evidence: v.actClosed+" of "+v.actTotal+" actions are closed ("+P(m.actClose)+") against your "+P(t.close)+" target."+(rep>0?" "+rep+" repeat event"+(rep===1?" was":"s were")+" also reported.":""),
+        why:"Open actions mean known hazards or causes remain uncontrolled for longer.",
+        invest:"Action-tracking discipline: a named owner, a due date, and a short weekly review of open items.",
+        ask:"Which open actions address the highest-risk hazards, and should those be closed first?"});
+    }
+    if (m.hazClose !== null && m.hazClose < t.close) {
+      add({id:"haz", leading:true, score:(t.close-m.hazClose)/t.close,
+        title:"Reported hazards are not being closed fast enough",
+        evidence: v.hazClosed+" of "+v.hazRep+" reported hazards are closed ("+P(m.hazClose)+") against your "+P(t.close)+" target.",
+        why:"If people report hazards and see little change, reporting tends to fall. The backlog also keeps exposure in place.",
+        invest:"A simple triage rule so high-risk hazards are handled first, plus visible feedback to the people who reported.",
+        ask:"What share of the unclosed hazards are high risk, and who owns them?"});
+    }
+    if (m.rpr !== null && m.rpr < t.rep) {
+      var lag = (v.targetTrir !== null && m.trir !== null && m.trir > v.targetTrir);
+      add({id:"report", leading:true, score:(t.rep-m.rpr)/t.rep + (lag?0.25:0),
+        title:"Early-warning reports are thin compared with injuries",
+        evidence: v.hazRep+" hazard reports for "+v.recordable+" recordable injuries is "+R(m.rpr)+" per injury, against your minimum of "+t.rep+"."+(lag?" The recordable rate is also above your target.":""),
+        why:"If injuries are happening but few hazards or near misses are reported, you may be missing early signals, or people may not trust the reporting process.",
+        invest:"Easier reporting channels, supervisor feedback on every report, and coaching on what is worth reporting.",
+        ask:"Are hazards genuinely rare, or are they not being reported? How would we tell the difference?"});
+    }
+    if (m.insp !== null && m.insp < t.insp) {
+      add({id:"insp", leading:true, score:(t.insp-m.insp)/t.insp,
+        title:"Planned inspections are not all being completed",
+        evidence: v.inspDone+" of "+v.inspPlan+" planned inspections were completed ("+P(m.insp)+") against your "+P(t.insp)+" target.",
+        why:"Skipped inspections remove a main source of early warning, and the missing ones may be in the busiest or highest-risk areas.",
+        invest:"Protected time, a simple checklist, and a plan that focuses inspections on higher-risk areas.",
+        ask:"Which planned inspections were missed, and were they in high-risk areas?"});
+    }
+    if (m.admin !== null && m.admin > t.admin && (rep > 0 || (v.recordable !== null && v.recordable > 0))) {
+      add({id:"admin", leading:false, score:(m.admin-t.admin)/Math.max(0.0001,1-t.admin) + (rep>0?0.25:0),
+        title:"Many closed actions rely only on training, reminders or signage",
+        evidence: v.adminClosed+" of "+v.actClosed+" closed actions ("+P(m.admin)+") rely only on training, reminders or signage, against your "+P(t.admin)+" limit.",
+        why:"These controls depend on people remembering to act. They are usually weaker than removing the hazard or adding a physical safeguard.",
+        invest:"A review of whether elimination, substitution or engineering controls were considered before training and signage.",
+        ask:"For the repeated hazards, was a stronger control assessed, and why was it not chosen?"});
+    }
+
+    // Leading status
+    var leadAvail = [m.actClose,m.hazClose,m.eff,m.overdue,m.insp,m.rpr].filter(function(x){return x!==null;}).length;
+    var leadFlag = sigs.filter(function(s){return s.leading;}).length;
+    var leadStatus = leadAvail < 2 ? "unknown" : (leadFlag/leadAvail >= 0.5 ? "weak" : "strong");
+    var lagStatus = (v.targetTrir !== null && m.trir !== null) ? (m.trir > v.targetTrir ? "above" : "within") : "unknown";
+
+    // Lagging above target while leading looks healthy
+    if (lagStatus === "above" && leadStatus === "strong" && leadFlag === 0) {
+      add({id:"quality", leading:false, score:0.5,
+        title:"Leading indicators look healthy, yet injuries are above target",
+        evidence:"The recordable rate is "+R(m.trir)+" against your target of "+R(v.targetTrir)+", while none of the leading indicators fell below your thresholds.",
+        why:"The leading indicators may be counting activity (inspections done, actions closed) rather than testing whether controls are working.",
+        invest:"A review of the leading indicators themselves, adding measures that test control performance, not only activity.",
+        ask:"Which of our leading indicators would have warned us about the injuries that actually happened?"});
+    }
+
+    sigs.sort(function(a,b){ return b.score - a.score; });
+    sigs.forEach(function(s){ s.sev = s.score >= 0.6 ? "high" : (s.score >= 0.3 ? "medium" : "watch"); });
+
+    return {m:m, t:t, checks:checks, sigs:sigs, leadStatus:leadStatus, lagStatus:lagStatus, v:v, leadAvail:leadAvail};
+  }
+
+  /* ---------- text helpers ---------- */
+  function statusText(a){
+    var l = a.lagStatus, d = a.leadStatus;
+    if (l === "above" && d === "weak") return "Results are above your target and your early-warning indicators are weak. Fix the system that gives you early signals first, then work on the specific gaps below.";
+    if (l === "above" && d === "strong") return "Results are above your target even though leading indicators look healthy. Check whether those indicators measure risk reduction, not just activity.";
+    if (l === "within" && d === "weak") return "Results are within your target, but several leading indicators are weak. Good outcomes may not last without fixing the gaps below.";
+    if (l === "within" && d === "strong") return "Results are within your target and leading indicators are broadly healthy. Keep checking where exposure is concentrated and whether the indicators test control performance.";
+    if (d === "weak") return "Several leading indicators are below your thresholds. Add a target rate to compare them with your injury results.";
+    if (d === "strong") return "Leading indicators are broadly within your thresholds. Add a target rate to compare them with your injury results.";
+    return "Enter at least two leading indicators to see the early-warning picture. Add a target rate to compare it with your injury results.";
+  }
+
+  function buildBrief(a){
+    var v = a.v, m = a.m, top = a.sigs[0], base = v.base === 1000000 ? "1,000,000" : "200,000";
+    var lines = [];
+    var fin = "Finding: ";
+    if (m.trir !== null) fin += "Over the period entered ("+v.hours.toLocaleString("en-US")+" hours worked), the recordable rate is "+R(m.trir)+" per "+base+" hours"+(m.ltir !== null ? " and the lost-time rate is "+R(m.ltir) : "")+". ";
+    else fin += "Injury rates could not be calculated from the numbers entered. ";
+    if (top) fin += "The largest gap is: "+top.title.toLowerCase()+". "+top.evidence;
+    else fin += "No leading indicator fell below the thresholds set, so there is no single priority gap in these numbers.";
+    lines.push(fin);
+    var lim = "Limitation: The figures were typed in by hand and have not been verified. Thresholds are adjustable illustrative values, not standards. This view cannot see event severity, exposure, site context or cost.";
+    a.checks.forEach(function(c){ if (c.level === "warn") lim += " Note: "+c.text; });
+    lines.push(lim);
+    lines.push("Next action: " + (top ? "Answer this first, with evidence: " + top.ask : "Check where exposure is concentrated and whether the leading indicators test control performance, not just activity."));
+    lines.push("Decision required: " + (top ? "Support for " + top.invest.charAt(0).toLowerCase() + top.invest.slice(1) : "Agree which indicator to strengthen first and who owns it."));
+    return lines.join("\n\n");
+  }
+
+  /* ---------- render ---------- */
+  function kpi(label, val, na){ return '<div class="k'+(val===null?' na':'')+'"><b>'+(val===null?'n/a':val)+'</b><span>'+esc(label)+'</span></div>'; }
+
+  function meter(label, val, target, higherBetter){
+    if (val === null) return "";
+    var ok = higherBetter ? val >= target : val <= target;
+    return '<div class="meter"><div class="lbl"><span>'+esc(label)+' '+P(val)+'</span><span>'+(higherBetter?'target ':'limit ')+P(target)+'</span></div>'+
+      '<div class="track" role="img" aria-label="'+esc(label)+' '+P(val)+', '+(higherBetter?'target ':'limit ')+P(target)+', '+(ok?'meets threshold':'does not meet threshold')+'">'+
+      '<div class="fill '+(ok?'ok':'gap')+'" style="width:'+Math.min(100,Math.round(val*100))+'%"></div>'+
+      '<div class="tick" style="left:calc('+Math.min(100,Math.round(target*100))+'% - 1px)"></div></div></div>';
+  }
+
+  function sigCard(s, i){
+    return '<div class="sig '+s.sev+'"><h4><span class="sev '+s.sev+'">'+(s.sev==="high"?"High":s.sev==="medium"?"Medium":"Watch")+'</span>'+(i!==undefined?(i+1)+'. ':'')+esc(s.title)+'</h4>'+
+      '<dl><dt>What your numbers show</dt><dd>'+esc(s.evidence)+'</dd>'+
+      '<dt>Why it matters</dt><dd>'+esc(s.why)+'</dd>'+
+      '<dt>Where investment or effort could go</dt><dd>'+esc(s.invest)+'</dd>'+
+      '<dt>Ask before you decide</dt><dd>'+esc(s.ask)+'</dd></dl></div>';
+  }
+
+  var lastBrief = "";
+
+  function render(){
+    var inp = readInputs();
+    var out = $("t_results");
+    var any = inp.bad.length > 0 || NUM_FIELDS.some(function(f){ return inp.v[f] !== null; });
+    if (!any) {
+      out.innerHTML = '<div class="empty"><strong>Your results will appear here.</strong><br>Enter your numbers on the left, or choose <em>Load dummy example</em> to see how it works.</div>';
+      return;
+    }
+    var a = analyze(inp.v, inp.t);
+    var h = "";
+
+    // 1 Data check
+    h += '<div class="rcard"><h3>1. Check the data</h3>';
+    var msgs = [];
+    inp.bad.forEach(function(f){
+      var lab = LABELS[f] || (THR.filter(function(x){return x.id===f;})[0]||{}).label || f;
+      msgs.push({level:"error", text:"\u201C"+lab+"\u201D needs "+(INT_FIELDS.indexOf(f)>-1?"a whole number of 0 or more":"a valid number in range")+". It was ignored."});
+    });
+    msgs = msgs.concat(a.checks);
+    if (!msgs.length) msgs.push({level:"info", text:"No inconsistencies found in the numbers entered. This only means they are internally consistent, not that they are correct. Check your own exclusions (for example commuting or contractor cases) are applied the same way every period."});
+    msgs.forEach(function(c){ h += '<div class="msg '+c.level+'">'+esc(c.text)+'</div>'; });
+    h += '</div>';
+
+    // 2 Picture
+    var baseLbl = inp.v.base === 1000000 ? "1M h" : "200k h";
+    h += '<div class="rcard"><h3>2. Understand the picture</h3><div class="kgrid">'+
+      kpi("Recordable rate per "+baseLbl, a.m.trir===null?null:R(a.m.trir))+
+      kpi("Lost-time rate per "+baseLbl, a.m.ltir===null?null:R(a.m.ltir))+
+      kpi("Reports per recordable injury", a.m.rpr===null?null:R(a.m.rpr))+
+      kpi("Repeat events", inp.v.repeats===null?null:String(inp.v.repeats))+
+      '</div><div class="status" style="margin-top:14px">'+esc(statusText(a))+'</div>'+
+      '<div style="margin-top:16px">'+
+      meter("Action closure", a.m.actClose, a.t.close, true)+
+      meter("Hazard closure", a.m.hazClose, a.t.close, true)+
+      meter("Verified effective (of closed)", a.m.eff, a.t.eff, true)+
+      meter("Inspections completed", a.m.insp, a.t.insp, true)+
+      meter("Past due (of open actions)", a.m.overdue, a.t.overdue, false)+
+      meter("Training/signage only (of closed)", a.m.admin, a.t.admin, false)+
+      '</div><p class="note">The dark marker on each bar is your threshold. Orange means the threshold is not met.</p></div>';
+
+    // 3 Priorities
+    h += '<div class="rcard"><h3>3. Where to look first</h3>';
+    if (!a.sigs.length) {
+      h += '<div class="msg info">'+(a.leadAvail<2?'Not enough leading-indicator data yet. Enter more of the leading numbers to see priorities.':'No indicator fell below the thresholds you set. Consider where exposure is concentrated, and whether the indicators test control performance, not only activity.')+'</div>';
+    } else {
+      a.sigs.slice(0,3).forEach(function(s,i){ h += sigCard(s,i); });
+      if (a.sigs.length > 3) {
+        h += '<details class="adv" style="margin-top:6px"><summary>Show the other '+(a.sigs.length-3)+' signal'+(a.sigs.length-3===1?'':'s')+'</summary><div style="margin-top:12px">';
+        a.sigs.slice(3).forEach(function(s,i){ h += sigCard(s,i+3); });
+        h += '</div></details>';
+      }
+      h += '<details class="adv" style="margin-top:12px"><summary>How the ranking works</summary><p class="note" style="margin-top:10px">Each signal is ranked by how far your number is from the threshold you set. Signals linked to repeat events, or to injuries above your target, are ranked higher. This is a simple rule of thumb to start a conversation. It is not a risk score, and it does not know event severity or cost.</p></details>';
+    }
+    h += '</div>';
+
+    // 4 Brief
+    lastBrief = buildBrief(a);
+    h += '<div class="rcard"><h3>4. Explain the next action</h3><p class="note">A draft management brief from your numbers. Edit it before you use it.</p>'+
+      '<label class="sr" for="t_brief">Draft management brief</label><textarea id="t_brief" class="briefbox">'+esc(lastBrief)+'</textarea>'+
+      '<div style="margin-top:10px"><button type="button" id="t_copy" class="btn btn-n btn-s">Copy brief</button><span id="t_copied" class="copied" role="status"></span></div></div>';
+
+    out.innerHTML = h;
+    var cp = $("t_copy");
+    if (cp) cp.addEventListener("click", copyBrief);
+  }
+
+  function copyBrief(){
+    var box = $("t_brief"), note = $("t_copied");
+    var text = box ? box.value : lastBrief;
+    function done(ok){ note.textContent = ok ? "Copied" : "Select the text and copy it manually"; setTimeout(function(){ if(note) note.textContent = ""; }, 2500); }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ done(true); }, function(){ fallback(); });
+    } else { fallback(); }
+    function fallback(){
+      try { box.focus(); box.select(); done(document.execCommand("copy")); }
+      catch(e){ done(false); }
+    }
+  }
+
+  /* ---------- wiring ---------- */
+  function setValues(obj){
+    NUM_FIELDS.forEach(function(f){ $("t_"+f).value = (obj && obj[f] !== undefined && obj[f] !== null) ? obj[f] : ""; });
+  }
+  var timer = null;
+  function schedule(){ clearTimeout(timer); timer = setTimeout(render, 150); }
+
+  NUM_FIELDS.concat(THR.map(function(h){return h.id;})).forEach(function(f){
+    $("t_"+f).addEventListener("input", schedule);
+  });
+  $("t_base").addEventListener("change", render);
+  $("t_example").addEventListener("click", function(){ setValues(EXAMPLE); render(); $("t_results").scrollIntoView({behavior:"smooth", block:"nearest"}); });
+  $("t_clear").addEventListener("click", function(){
+    setValues(null);
+    THR.forEach(function(h){ $("t_"+h.id).value = ""; });
+    $("t_base").value = "200000";
+    render();
+  });
+
+  render();
+
+  // Exposed only so the logic can be tested; it has no side effects.
+  window.__hseLabAnalyze = analyze;
 })();
 </script>
 </body>
