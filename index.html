@@ -98,7 +98,8 @@ nav a:hover{color:var(--yellow)}
 
 /* Decision tool */
 .tool{background:var(--light)}
-.privacy{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-left:5px solid var(--green);border-radius:10px;padding:12px 16px;margin:18px 0 28px;font-size:15px}
+.privacy{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-left:5px solid var(--green);border-radius:10px;padding:12px 16px;margin:18px 0 12px;font-size:15px}
+.privacy.scope{border-left-color:var(--navy2);margin:0 0 28px}
 .toolgrid{display:grid;grid-template-columns:minmax(300px,.85fr) 1.4fr;gap:28px;align-items:start}
 @media(max-width:980px){.toolgrid{grid-template-columns:1fr}}
 .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
@@ -114,6 +115,8 @@ fieldset.fs legend{font-weight:800;color:var(--navy);padding:0 8px;font-size:15p
 details.adv{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin-bottom:16px}
 details.adv summary{cursor:pointer;font-weight:700;color:var(--navy)}
 details.adv .row2{margin-top:12px}
+.src{margin:12px 0 0;padding-left:20px;font-size:14.5px}
+.src li{margin:9px 0}
 .empty{background:#fff;border:2px dashed var(--line);border-radius:14px;padding:34px;text-align:center;color:var(--muted)}
 .rcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:18px;box-shadow:0 4px 18px rgba(8,43,92,.06)}
 .rcard h3{margin-bottom:10px}
@@ -121,11 +124,11 @@ details.adv .row2{margin-top:12px}
 .msg.error{background:#fdeeed;border-left:4px solid var(--red)}
 .msg.warn{background:#fff4e8;border-left:4px solid var(--orange)}
 .msg.info{background:var(--light);border-left:4px solid var(--navy2)}
-.kgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-@media(max-width:700px){.kgrid{grid-template-columns:1fr 1fr}}
+.kgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
 .k{background:var(--light);border-radius:10px;padding:12px;text-align:center}
 .k b{display:block;font-size:24px;line-height:1.15;color:var(--navy)}
 .k span{font-size:12.5px;color:var(--muted);line-height:1.3;display:block}
+.k small.ci{display:block;font-size:11.5px;color:var(--muted);margin-top:5px;line-height:1.3}
 .k.na b{color:#8a97a8;font-size:20px}
 .status{font-size:17px;font-weight:600;padding:14px 16px;border-radius:10px;background:var(--pale);border:1px solid #f0dc9c}
 .meter{margin:12px 0}
@@ -319,6 +322,10 @@ footer .wrap{display:grid;gap:8px}
       <span aria-hidden="true" style="font-size:22px">&#128274;</span>
       <div data-i="t_priv"><strong>Your numbers stay on your device.</strong> This page does not send, save or store anything. Closing or refreshing the page clears it. Please use <strong>dummy, rounded or fully authorised figures</strong>. Do not enter confidential or personal information.</div>
     </div>
+    <div class="privacy scope" role="note">
+      <span aria-hidden="true" style="font-size:22px">&#9432;</span>
+      <div data-i="t_scope"><strong>Scope.</strong> These indicators suit everyday injury and action management. They are not barrier-based process-safety indicators for major-hazard sites (see HSE&rsquo;s HSG254 for that).</div>
+    </div>
 
     <div class="toolgrid">
       <!-- INPUTS -->
@@ -332,7 +339,7 @@ footer .wrap{display:grid;gap:8px}
           <legend data-i="lg1">1. Context</legend>
           <div class="f">
             <label for="t_hours" data-i="f_hours_l">Hours worked in the period</label>
-            <small data-i="f_hours_s">Total hours for the people you count, for the same period as the numbers below.</small>
+            <small data-i="f_hours_s">Actual hours worked (exclude leave), for the same people and period as the cases you count.</small>
             <input id="t_hours" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 480000" data-ph="ph_hours">
           </div>
           <div class="f">
@@ -342,12 +349,13 @@ footer .wrap{display:grid;gap:8px}
               <option value="1000000" data-i="o1m">per 1,000,000 hours</option>
             </select>
           </div>
+          <p class="note" data-i="def_note">Definitions of recordable, lost-time and closed differ between organisations and regulators. Use yours, and keep them the same from period to period.</p>
         </fieldset>
 
         <fieldset class="fs">
           <legend data-i="lg2">2. Lagging results (what happened)</legend>
           <div class="row2">
-            <div class="f"><label for="t_recordable" data-i="f_rec_l">Recordable injuries</label><small data-i="f_rec_s">Include lost-time cases.</small><input id="t_recordable" type="number" inputmode="numeric" min="0" step="1"></div>
+            <div class="f"><label for="t_recordable" data-i="f_rec_l">Recordable injuries</label><small data-i="f_rec_s">Include lost-time cases. Use your own recordable definition.</small><input id="t_recordable" type="number" inputmode="numeric" min="0" step="1"></div>
             <div class="f"><label for="t_lti" data-i="f_lti_l">Lost-time injuries</label><small data-i="f_lti_s">A subset of recordable.</small><input id="t_lti" type="number" inputmode="numeric" min="0" step="1"></div>
           </div>
           <div class="row2">
@@ -363,12 +371,12 @@ footer .wrap{display:grid;gap:8px}
             <div class="f"><label for="t_hazClosed" data-i="f_hc_l">Hazards closed</label><small data-i="f_hc_s">Of those reported.</small><input id="t_hazClosed" type="number" inputmode="numeric" min="0" step="1"></div>
           </div>
           <div class="row2">
-            <div class="f"><label for="t_actTotal" data-i="f_at_l">Corrective actions</label><small data-i="f_at_s">Total in the period.</small><input id="t_actTotal" type="number" inputmode="numeric" min="0" step="1"></div>
-            <div class="f"><label for="t_actClosed" data-i="f_ac_l">Actions closed</label><small data-i="f_ac_s">Marked complete.</small><input id="t_actClosed" type="number" inputmode="numeric" min="0" step="1"></div>
+            <div class="f"><label for="t_actTotal" data-i="f_at_l">Corrective actions raised</label><small data-i="f_at_s">Raised in this period.</small><input id="t_actTotal" type="number" inputmode="numeric" min="0" step="1"></div>
+            <div class="f"><label for="t_actClosed" data-i="f_ac_l">Of those, closed</label><small data-i="f_ac_s">Marked complete.</small><input id="t_actClosed" type="number" inputmode="numeric" min="0" step="1"></div>
           </div>
           <div class="row2">
             <div class="f"><label for="t_actVerified" data-i="f_av_l">Closed &amp; verified effective</label><small data-i="f_av_s">Checked that it worked.</small><input id="t_actVerified" type="number" inputmode="numeric" min="0" step="1"></div>
-            <div class="f"><label for="t_actOverdue" data-i="f_ao_l">Open actions past due</label><small data-i="f_ao_s">Still open, due date passed.</small><input id="t_actOverdue" type="number" inputmode="numeric" min="0" step="1"></div>
+            <div class="f"><label for="t_actOverdue" data-i="f_ao_l">Of those, open and past due</label><small data-i="f_ao_s">Still open, due date passed.</small><input id="t_actOverdue" type="number" inputmode="numeric" min="0" step="1"></div>
           </div>
           <div class="row2">
             <div class="f"><label for="t_inspPlan" data-i="f_ip_l">Inspections planned</label><input id="t_inspPlan" type="number" inputmode="numeric" min="0" step="1"></div>
@@ -389,7 +397,7 @@ footer .wrap{display:grid;gap:8px}
             <div class="f"><label for="t_eff" data-i="th2">Verified-effective target (%)</label><input id="t_eff" type="number" min="1" max="100" step="1" placeholder="70"></div>
             <div class="f"><label for="t_overdue" data-i="th3">Max past-due share of open actions (%)</label><input id="t_overdue" type="number" min="0" max="100" step="1" placeholder="10"></div>
             <div class="f"><label for="t_insp" data-i="th4">Inspection completion target (%)</label><input id="t_insp" type="number" min="1" max="100" step="1" placeholder="90"></div>
-            <div class="f"><label for="t_rep" data-i="th5">Min. hazard reports per recordable injury</label><input id="t_rep" type="number" min="1" step="1" placeholder="10"></div>
+            <div class="f"><label for="t_rep" data-i="th5">Illustrative min. hazard reports per recordable injury</label><input id="t_rep" type="number" min="1" step="1" placeholder="10"></div>
             <div class="f"><label for="t_admin" data-i="th6">Max share of closed actions that are training/signage only (%)</label><input id="t_admin" type="number" min="1" max="100" step="1" placeholder="60"></div>
           </div>
         </details>
@@ -398,6 +406,19 @@ footer .wrap{display:grid;gap:8px}
       <!-- RESULTS -->
       <div id="t_results" aria-live="polite"></div>
     </div>
+
+    <details class="adv" style="margin-top:28px">
+      <summary data-i="src_sum">Method and sources</summary>
+      <p class="note" style="margin-top:10px" data-i="src_intro">What the tool uses, and where each idea comes from. Thresholds, scores and the ranking are this tool&rsquo;s own rules of thumb, not published standards.</p>
+      <ul class="src">
+        <li data-i="s_1"><strong>Injury rate:</strong> cases &times; base &divide; hours worked. The 200,000 base is 100 workers &times; 40 hours &times; 50 weeks (<a href="https://www.osha.gov/laws-regs/standardinterpretations/2016-08-23" target="_blank" rel="noopener noreferrer">OSHA interpretation letter, 2016</a>). Use actual hours worked, excluding leave (<a href="https://www.bls.gov/iif/overview/compute-nonfatal-incidence-rates.htm" target="_blank" rel="noopener noreferrer">BLS</a>). Choose one base and keep it consistent.</li>
+        <li data-i="s_2"><strong>Recordable and lost-time:</strong> days away from work is one of the recording criteria, so lost-time cases are part of recordable cases (<a href="https://www.osha.gov/laws-regs/regulations/standardnumber/1904/1904.7" target="_blank" rel="noopener noreferrer">29 CFR 1904.7</a>). Your organisation&rsquo;s definitions may differ.</li>
+        <li data-i="s_3"><strong>Closed is not the same as effective:</strong> ISO 45001:2018 clause 10.2 asks organisations to review the effectiveness of corrective action.</li>
+        <li data-i="s_4"><strong>Control strength:</strong> NIOSH ranks elimination, substitution and engineering controls above administrative controls and PPE because they depend less on human action, while noting that administrative controls and PPE can still be effective (<a href="https://www.cdc.gov/niosh/hierarchy-of-controls/about/index.html" target="_blank" rel="noopener noreferrer">NIOSH hierarchy of controls</a>).</li>
+        <li data-i="s_5"><strong>Leading and lagging indicators:</strong> relying on injury data alone is discouraged (<a href="https://books.hse.gov.uk/gempdf/hsg254.pdf" target="_blank" rel="noopener noreferrer">HSE HSG254</a>). Hopkins (2009), <em>Safety Science</em> 47, 460&ndash;465, examines the lead/lag distinction critically. Reiman and Pietik&auml;inen (2012), <em>Safety Science</em> 50, 1993&ndash;2000, separate outcome, monitor and drive indicators. The tool therefore asks whether leading indicators test control performance, not only activity.</li>
+        <li data-i="s_6"><strong>Small numbers:</strong> 95% intervals use the exact Poisson method for counts up to 500 and Byar&rsquo;s approximation above that (<a href="https://fingertips.phe.org.uk/static-reports/public-health-technical-guidance/Basic_statistics/Rates.html" target="_blank" rel="noopener noreferrer">Public Health technical guidance: Rates</a>). One injury moves a small site&rsquo;s rate far more than a large site&rsquo;s (OSHA letter above).</li>
+      </ul>
+    </details>
   </div>
 </section>
 
@@ -568,22 +589,24 @@ footer .wrap{display:grid;gap:8px}
     t_h: "Dari angka Anda menjadi prioritas",
     t_p: "Masukkan hasil lagging Anda (yang sudah terjadi) dan indikator leading (upaya pencegahan). Alat ini memeriksa data Anda, menunjukkan kesenjangan terbesar, dan menyarankan apa yang perlu diselidiki atau diinvestasikan lebih dulu. Setelah itu alat ini menyusun draf ringkasan manajemen.",
     t_priv: "<strong>Angka Anda tetap berada di perangkat Anda.</strong> Halaman ini tidak mengirim, menyimpan, atau merekam apa pun. Menutup atau memuat ulang halaman akan menghapusnya. Gunakan angka <strong>dummy, pembulatan, atau yang sudah diizinkan sepenuhnya</strong>. Jangan memasukkan informasi rahasia atau data pribadi.",
+    t_scope: "<strong>Cakupan.</strong> Indikator ini cocok untuk pengelolaan cedera dan tindakan sehari-hari. Ini bukan indikator keselamatan proses berbasis penghalang (barrier) untuk fasilitas bahaya besar (lihat HSG254 dari HSE untuk itu).",
     t_ex: "Muat contoh data dummy", t_cl: "Hapus semua",
     lg1: "1. Konteks", lg2: "2. Hasil lagging (yang sudah terjadi)", lg3: "3. Indikator leading (pencegahan)",
     f_hours_l: "Jam kerja pada periode ini",
-    f_hours_s: "Total jam kerja orang-orang yang Anda hitung, untuk periode yang sama dengan angka di bawah.",
+    f_hours_s: "Jam kerja aktual (tidak termasuk cuti), untuk orang dan periode yang sama dengan kasus yang Anda hitung.",
     ph_hours: "mis. 480000",
     f_base_l: "Basis angka", o200: "per 200.000 jam", o1m: "per 1.000.000 jam",
-    f_rec_l: "Cedera recordable", f_rec_s: "Termasuk kasus hilang waktu kerja.",
+    def_note: "Definisi recordable, hilang waktu kerja, dan ditutup berbeda antar organisasi dan regulator. Gunakan definisi Anda sendiri dan jaga agar konsisten dari periode ke periode.",
+    f_rec_l: "Cedera recordable", f_rec_s: "Termasuk kasus hilang waktu kerja. Gunakan definisi recordable di organisasi Anda.",
     f_lti_l: "Cedera hilang waktu kerja (LTI)", f_lti_s: "Bagian dari recordable.",
     f_rep_l: "Kejadian berulang", f_rep_s: "Bahaya yang sama atau pengendalian yang sama-sama gagal.",
     f_tt_l: "Angka target Anda (opsional)", f_tt_s: "Target untuk angka recordable.",
     f_hr_l: "Bahaya dilaporkan", f_hr_s: "Bahaya dan nyaris celaka.",
     f_hc_l: "Bahaya ditutup", f_hc_s: "Dari yang dilaporkan.",
-    f_at_l: "Tindakan korektif", f_at_s: "Total pada periode ini.",
-    f_ac_l: "Tindakan ditutup", f_ac_s: "Ditandai selesai.",
+    f_at_l: "Tindakan korektif yang dibuat", f_at_s: "Dibuat pada periode ini.",
+    f_ac_l: "Dari jumlah itu, ditutup", f_ac_s: "Ditandai selesai.",
     f_av_l: "Ditutup &amp; terverifikasi efektif", f_av_s: "Sudah dicek bahwa tindakan berhasil.",
-    f_ao_l: "Tindakan terbuka lewat jatuh tempo", f_ao_s: "Masih terbuka, tenggat sudah lewat.",
+    f_ao_l: "Dari jumlah itu, terbuka dan lewat jatuh tempo", f_ao_s: "Masih terbuka, tenggat sudah lewat.",
     f_ip_l: "Inspeksi direncanakan", f_id_l: "Inspeksi diselesaikan",
     f_ad_l: "Tindakan ditutup yang hanya mengandalkan pelatihan, pengingat, atau rambu",
     f_ad_s: "Opsional. Membantu menguji apakah pengendalian yang lebih kuat sudah dipertimbangkan.",
@@ -592,8 +615,17 @@ footer .wrap{display:grid;gap:8px}
     th1: "Target penutupan (%)", th2: "Target terverifikasi efektif (%)",
     th3: "Maks. porsi lewat jatuh tempo dari tindakan terbuka (%)",
     th4: "Target penyelesaian inspeksi (%)",
-    th5: "Min. laporan bahaya per cedera recordable",
+    th5: "Min. laporan bahaya per cedera recordable (ilustrasi)",
     th6: "Maks. porsi tindakan ditutup yang hanya pelatihan/rambu (%)",
+
+    src_sum: "Metode dan sumber",
+    src_intro: "Apa yang digunakan alat ini, dan dari mana setiap gagasan berasal. Ambang batas, skor, dan peringkat adalah aturan praktis alat ini sendiri, bukan standar yang dipublikasikan.",
+    s_1: "<strong>Angka cedera:</strong> jumlah kasus &times; basis &divide; jam kerja. Basis 200.000 adalah 100 pekerja &times; 40 jam &times; 50 minggu (<a href=\"https://www.osha.gov/laws-regs/standardinterpretations/2016-08-23\" target=\"_blank\" rel=\"noopener noreferrer\">surat interpretasi OSHA, 2016</a>). Gunakan jam kerja aktual, tidak termasuk cuti (<a href=\"https://www.bls.gov/iif/overview/compute-nonfatal-incidence-rates.htm\" target=\"_blank\" rel=\"noopener noreferrer\">BLS</a>). Pilih satu basis dan gunakan secara konsisten.",
+    s_2: "<strong>Recordable dan hilang waktu kerja:</strong> hari tidak bekerja merupakan salah satu kriteria pencatatan, sehingga kasus hilang waktu kerja termasuk dalam kasus recordable (<a href=\"https://www.osha.gov/laws-regs/regulations/standardnumber/1904/1904.7\" target=\"_blank\" rel=\"noopener noreferrer\">29 CFR 1904.7</a>). Definisi di organisasi Anda mungkin berbeda.",
+    s_3: "<strong>Ditutup tidak sama dengan efektif:</strong> ISO 45001:2018 klausul 10.2 meminta organisasi meninjau efektivitas tindakan korektif.",
+    s_4: "<strong>Kekuatan pengendalian:</strong> NIOSH menempatkan eliminasi, substitusi, dan pengendalian teknis di atas pengendalian administratif dan APD karena kurang bergantung pada tindakan manusia, sambil mencatat bahwa pengendalian administratif dan APD tetap dapat efektif (<a href=\"https://www.cdc.gov/niosh/hierarchy-of-controls/about/index.html\" target=\"_blank\" rel=\"noopener noreferrer\">hierarki pengendalian NIOSH</a>).",
+    s_5: "<strong>Indikator leading dan lagging:</strong> mengandalkan data cedera saja tidak dianjurkan (<a href=\"https://books.hse.gov.uk/gempdf/hsg254.pdf\" target=\"_blank\" rel=\"noopener noreferrer\">HSE HSG254</a>). Hopkins (2009), <em>Safety Science</em> 47, 460&ndash;465, mengkaji secara kritis pembedaan lead/lag. Reiman dan Pietik&auml;inen (2012), <em>Safety Science</em> 50, 1993&ndash;2000, memisahkan indikator outcome, monitor, dan drive. Karena itu alat ini menanyakan apakah indikator leading menguji kinerja pengendalian, bukan hanya aktivitas.",
+    s_6: "<strong>Angka kecil:</strong> interval 95% memakai metode Poisson eksak untuk hitungan hingga 500 dan pendekatan Byar di atasnya (<a href=\"https://fingertips.phe.org.uk/static-reports/public-health-technical-guidance/Basic_statistics/Rates.html\" target=\"_blank\" rel=\"noopener noreferrer\">Public Health technical guidance: Rates</a>). Satu cedera menggeser angka lokasi kecil jauh lebih besar daripada lokasi besar (surat OSHA di atas).",
 
     j_e: "Cara belajar di sini",
     j_h: "Dari gagasan, ke praktik, hingga bukti yang dapat Anda simpan",
@@ -656,29 +688,63 @@ footer .wrap{display:grid;gap:8px}
   function ratio(a, b) { return (a !== null && b !== null && b > 0) ? a / b : null; }
   function lcFirst(s) { return s ? s.charAt(0).toLowerCase() + s.slice(1) : s; }
 
+  /* ================= statistics: 95% interval for a count of events (Poisson) =================
+     Exact (Garwood) limits by bisection for counts up to 500; Byar's approximation above that. */
+  function cdfPois(k, l) {
+    if (k < 0) return 0;
+    if (l <= 0) return 1;
+    var lp = -l, s = Math.exp(lp), i;
+    for (i = 1; i <= k; i++) { lp += Math.log(l) - Math.log(i); s += Math.exp(lp); }
+    return Math.min(1, s);
+  }
+  function poissonCI(x) {
+    var a = 0.025, i, m, l, h, lo = 0, hi;
+    if (x > 500) {
+      var z = 1.959964, x1 = x + 1;
+      return [x * Math.pow(1 - 1 / (9 * x) - z / (3 * Math.sqrt(x)), 3),
+              x1 * Math.pow(1 - 1 / (9 * x1) + z / (3 * Math.sqrt(x1)), 3)];
+    }
+    if (x > 0) {
+      l = 0; h = x + 1;
+      while (1 - cdfPois(x - 1, h) < a) h *= 2;
+      for (i = 0; i < 100; i++) { m = (l + h) / 2; if (1 - cdfPois(x - 1, m) < a) l = m; else h = m; }
+      lo = (l + h) / 2;
+    }
+    l = 0; h = x + 10;
+    while (cdfPois(x, h) > a) h *= 2;
+    for (i = 0; i < 100; i++) { m = (l + h) / 2; if (cdfPois(x, m) > a) l = m; else h = m; }
+    hi = (l + h) / 2;
+    return [lo, hi];
+  }
+  function rateCI(x, hours, base) { var c = poissonCI(x); return [c[0] * base / hours, c[1] * base / hours]; }
+
   /* ================= generated text: English ================= */
   function rsEN(n) { return n > 0 ? " " + n + " repeat event" + (n === 1 ? " was" : "s were") + " also reported." : ""; }
   var EN = {
-    field: { hours: "Hours worked", recordable: "Recordable injuries", lti: "Lost-time injuries", repeats: "Repeat events", targetTrir: "Target rate", hazRep: "Hazards reported", hazClosed: "Hazards closed", actTotal: "Corrective actions", actClosed: "Actions closed", actVerified: "Closed & verified effective", actOverdue: "Open actions past due", inspPlan: "Inspections planned", inspDone: "Inspections completed", adminClosed: "Training/signage-only closed actions" },
+    field: { hours: "Hours worked", recordable: "Recordable injuries", lti: "Lost-time injuries", repeats: "Repeat events", targetTrir: "Target rate", hazRep: "Hazards reported", hazClosed: "Hazards closed", actTotal: "Corrective actions raised", actClosed: "Actions closed", actVerified: "Closed & verified effective", actOverdue: "Open actions past due", inspPlan: "Inspections planned", inspDone: "Inspections completed", adminClosed: "Training/signage-only closed actions" },
     thr: { close: "Closure target", eff: "Verified-effective target", overdue: "Max past-due share", insp: "Inspection completion target", rep: "Min. reports per recordable", admin: "Max training/signage-only share" },
     chk: {
       hoursZero: function () { return "Hours worked must be greater than zero to calculate injury rates."; },
       ltiGtRec: function () { return "Lost-time injuries cannot exceed recordable injuries (lost-time is a subset). Injury rates were skipped."; },
       hazGt: function () { return "Hazards closed cannot exceed hazards reported. Hazard closure was skipped."; },
-      actGt: function () { return "Actions closed cannot exceed total actions. Action metrics were skipped."; },
+      actGt: function () { return "Actions closed cannot exceed actions raised. Count only actions raised in the same period. Action metrics were skipped."; },
       verGt: function () { return "Verified-effective actions cannot exceed closed actions. That metric was skipped."; },
-      odGt: function () { return "Past-due actions cannot exceed open actions (total minus closed). That metric was skipped."; },
+      odGt: function () { return "Past-due actions cannot exceed open actions (raised minus closed). That metric was skipped."; },
       adminGt: function () { return "Training/signage-only actions cannot exceed closed actions. That metric was skipped."; },
       inspGt: function () { return "Inspections completed cannot exceed inspections planned. That metric was skipped."; },
       smallOpen: function (p) { return "The past-due share is based on only " + p.n + " open action" + (p.n === 1 ? "" : "s") + ". Read it with the count, not just the percentage."; },
-      smallRec: function (p) { return "With only " + p.n + " recordable case" + (p.n === 1 ? "" : "s") + ", injury rates can swing widely. Read the rate together with the count."; }
+      smallRec: function (p) { return "With only " + p.n + " recordable case" + (p.n === 1 ? "" : "s") + ", the rate is imprecise. Read it as a range (see the 95% interval), together with the count."; },
+      aboveChance: function (p) { return "The recordable rate is above your target, but its 95% interval (" + R(p.lo) + " to " + R(p.hi) + ") includes the target, so chance alone could explain the gap. Treat it as a signal to watch, not proof of a change."; }
     },
     badInt: function (l) { return "\u201C" + l + "\u201D needs a whole number of 0 or more. It was ignored."; },
     badNum: function (l) { return "\u201C" + l + "\u201D needs a valid number in range. It was ignored."; },
-    none: "No inconsistencies found in the numbers entered. This only means they are internally consistent, not that they are correct. Check your own exclusions (for example commuting or contractor cases) are applied the same way every period.",
+    none: "No inconsistencies found in the numbers entered. This only means they are internally consistent, not that they are correct. Check your own exclusions (for example commuting or contractor cases) are applied the same way every period, and that the hours cover the same people as the cases.",
     status: {
-      aboveWeak: "Results are above your target and your early-warning indicators are weak. Fix the system that gives you early signals first, then work on the specific gaps below.",
-      aboveStrong: "Results are above your target even though leading indicators look healthy. Check whether those indicators measure risk reduction, not just activity.",
+      aboveWeak: "Results are above your target (the 95% interval excludes it) and your early-warning indicators are weak. Fix the system that gives you early signals first, then work on the specific gaps below.",
+      aboveStrong: "Results are above your target (the 95% interval excludes it) even though leading indicators look healthy. Check whether those indicators measure risk reduction, not just activity.",
+      chanceWeak: "The recordable rate is above your target, but with this few cases chance could explain the gap. Your early-warning indicators are weak, so strengthen those first, then work on the specific gaps below.",
+      chanceStrong: "The recordable rate is above your target, but with this few cases chance could explain the gap, and leading indicators look healthy. Watch the trend over several periods rather than reacting to one.",
+      chanceUnknown: "The recordable rate is above your target, but with this few cases chance could explain the gap. Enter at least two leading indicators to see the early-warning picture.",
       withinWeak: "Results are within your target, but several leading indicators are weak. Good outcomes may not last without fixing the gaps below.",
       withinStrong: "Results are within your target and leading indicators are broadly healthy. Keep checking where exposure is concentrated and whether the indicators test control performance.",
       weakOnly: "Several leading indicators are below your thresholds. Add a target rate to compare them with your injury results.",
@@ -690,7 +756,9 @@ footer .wrap{display:grid;gap:8px}
       empty: "<strong>Your results will appear here.</strong><br>Enter your numbers in the form, or choose <em>Load dummy example</em> to see how it works.",
       baseShort: { 200000: "200k h", 1000000: "1M h" },
       k1: function (b) { return "Recordable rate per " + b; }, k2: function (b) { return "Lost-time rate per " + b; },
-      k3: "Reports per recordable injury", k4: "Repeat events", na: "n/a",
+      k3: "Reports per recordable injury", k4: "Repeat events", k5: function (b) { return "Hazard reports per " + b; }, na: "n/a",
+      ci: function (lo, hi) { return "95% interval " + R(lo) + " to " + R(hi); },
+      ciNote: "Intervals show how far chance alone could move a rate when there are few cases. Read a wide interval as a range, not a single number.",
       mAct: "Action closure", mHaz: "Hazard closure", mEff: "Verified effective (of closed)", mInsp: "Inspections completed", mOver: "Past due (of open actions)", mAdmin: "Training/signage only (of closed)",
       target: "target ", limit: "limit ", meets: "meets threshold", notMeets: "does not meet threshold",
       meterNote: "The dark marker on each bar is your threshold. Orange means the threshold is not met.",
@@ -698,7 +766,7 @@ footer .wrap{display:grid;gap:8px}
       noneBelow: "No indicator fell below the thresholds you set. Consider where exposure is concentrated, and whether the indicators test control performance, not only activity.",
       showOther: function (n) { return "Show the other " + n + " signal" + (n === 1 ? "" : "s"); },
       howH: "How the ranking works",
-      howP: "Each signal is ranked by how far your number is from the threshold you set. Signals linked to repeat events, or to injuries above your target, are ranked higher. This is a simple rule of thumb to start a conversation. It is not a risk score, and it does not know event severity or cost.",
+      howP: "Each signal is ranked by how far your number is from the threshold you set. Signals linked to repeat events, or to injuries clearly above your target, are ranked higher. The thresholds, scores and ranking are this tool's own rules of thumb, not published standards. It is a way to start a conversation, not a risk score, and it does not know event severity or cost.",
       sev: { high: "High", medium: "Medium", watch: "Watch" },
       dt: ["What your numbers show", "Why it matters", "Where investment or effort could go", "Ask before you decide"],
       briefNote: "A draft management brief from your numbers. Edit it before you use it.",
@@ -706,7 +774,7 @@ footer .wrap{display:grid;gap:8px}
     },
     b: {
       finding: "Finding: ", limitation: "Limitation: ", next: "Next action: ", decision: "Decision required: ",
-      rate: function (h, rt, lt, base) { return "Over the period entered (" + h + " hours worked), the recordable rate is " + rt + " per " + base + " hours" + (lt !== null ? " and the lost-time rate is " + lt : "") + ". "; },
+      rate: function (h, rt, ci, lt, base) { return "Over the period entered (" + h + " hours worked), the recordable rate is " + rt + (ci ? " (95% interval " + ci + ")" : "") + " per " + base + " hours" + (lt !== null ? " and the lost-time rate is " + lt : "") + ". "; },
       noRate: "Injury rates could not be calculated from the numbers entered. ",
       gap: function (t, e) { return "The largest gap is: " + t.toLowerCase() + ". " + e; },
       noGap: "No leading indicator fell below the thresholds set, so there is no single priority gap in these numbers.",
@@ -723,41 +791,45 @@ footer .wrap{display:grid;gap:8px}
       c: { cls: "partial", text: "<strong>Too strong.</strong> Repeated events are a signal to investigate, but you still need to check that they share the same hazard and failed control before concluding the actions failed." }
     },
     sig: {
-      eff: function (p) { return { title: "Closed actions are not being verified as effective", evidence: p.ver + " of " + p.closed + " closed actions are verified effective (" + P(p.pct) + ") against your " + P(p.thr) + " threshold." + rsEN(p.rep), why: "A closed action shows work was finished. It does not show the control reduced the risk. Without verification, closure can overstate how much risk is controlled.", invest: "Time and ownership for effectiveness checks, and clear success criteria written when each action is created.", ask: "What would we expect to see if this action worked, and who checks it, and when?" }; },
+      eff: function (p) { return { title: "Closed actions are not being verified as effective", evidence: p.ver + " of " + p.closed + " closed actions are verified effective (" + P(p.pct) + ") against your " + P(p.thr) + " threshold." + rsEN(p.rep), why: "A closed action shows work was finished. It does not show the control reduced the risk. Without verification, closure can overstate how much risk is controlled. ISO 45001 clause 10.2 asks organisations to review the effectiveness of corrective action.", invest: "Time and ownership for effectiveness checks, and clear success criteria written when each action is created.", ask: "What would we expect to see if this action worked, and who checks it, and when?" }; },
       overdue: function (p) { return { title: "Open actions are slipping past their due dates", evidence: p.od + " of " + p.open + " open actions are past due (" + P(p.pct) + ") against your " + P(p.thr) + " limit.", why: "Late actions usually point to unclear ownership, limited capacity, or work that is blocked and waiting for a decision.", invest: "An escalation routine, owner capacity, realistic due dates, and a quick decision path for blocked actions that need budget or approval.", ask: "Which overdue actions are blocked, and what decision or resource would unblock them?" }; },
       repeat: function (p) { return { title: "Closure looks healthy, but similar events keep happening", evidence: "Action closure is " + P(p.pct) + " (target " + P(p.thr) + "), yet " + p.rep + " repeat event" + (p.rep === 1 ? " was" : "s were") + " reported.", why: "High closure with repeat events suggests actions may be completed without reaching the root cause or the failed control.", invest: "Investigation quality and root-cause review, and possibly a stronger control for the repeated hazard.", ask: "Are the repeat events really the same hazard and the same failed control, and did the earlier action address that control?" }; },
-      close: function (p) { return { title: "Corrective action closure is below target", evidence: p.closed + " of " + p.total + " actions are closed (" + P(p.pct) + ") against your " + P(p.thr) + " target." + rsEN(p.rep), why: "Open actions mean known hazards or causes remain uncontrolled for longer.", invest: "Action-tracking discipline: a named owner, a due date, and a short weekly review of open items.", ask: "Which open actions address the highest-risk hazards, and should those be closed first?" }; },
+      close: function (p) { return { title: "Corrective action closure is below target", evidence: p.closed + " of " + p.total + " actions raised are closed (" + P(p.pct) + ") against your " + P(p.thr) + " target." + rsEN(p.rep), why: "Open actions mean known hazards or causes remain uncontrolled for longer.", invest: "Action-tracking discipline: a named owner, a due date, and a short weekly review of open items.", ask: "Which open actions address the highest-risk hazards, and should those be closed first?" }; },
       haz: function (p) { return { title: "Reported hazards are not being closed fast enough", evidence: p.closed + " of " + p.rep + " reported hazards are closed (" + P(p.pct) + ") against your " + P(p.thr) + " target.", why: "If people report hazards and see little change, reporting tends to fall. The backlog also keeps exposure in place.", invest: "A simple triage rule so high-risk hazards are handled first, plus visible feedback to the people who reported.", ask: "What share of the unclosed hazards are high risk, and who owns them?" }; },
-      report: function (p) { return { title: "Early-warning reports are thin compared with injuries", evidence: p.hazRep + " hazard reports for " + p.rec + " recordable injuries is " + R(p.rpr) + " per injury, against your minimum of " + p.min + "." + (p.lag ? " The recordable rate is also above your target." : ""), why: "If injuries are happening but few hazards or near misses are reported, you may be missing early signals, or people may not trust the reporting process.", invest: "Easier reporting channels, supervisor feedback on every report, and coaching on what is worth reporting.", ask: "Are hazards genuinely rare, or are they not being reported? How would we tell the difference?" }; },
+      report: function (p) { return { title: "Few hazard reports compared with injuries (interpret with care)", evidence: p.hazRep + " hazard reports for " + p.rec + " recordable injuries is " + R(p.rpr) + " per injury, against your illustrative minimum of " + p.min + "." + (p.lag ? " The recordable rate is also clearly above your target." : ""), why: "Few reports alongside injuries can mean early signals are being missed, or that people do not trust the reporting process. Report counts also reflect culture and volume as well as risk, so a low ratio is a prompt to ask questions, and a high count is not proof of safety either.", invest: "Easier reporting channels, supervisor feedback on every report, and coaching on what is worth reporting.", ask: "Are hazards genuinely rare, or are they not being reported? How would we tell the difference?" }; },
       insp: function (p) { return { title: "Planned inspections are not all being completed", evidence: p.done + " of " + p.plan + " planned inspections were completed (" + P(p.pct) + ") against your " + P(p.thr) + " target.", why: "Skipped inspections remove a main source of early warning, and the missing ones may be in the busiest or highest-risk areas.", invest: "Protected time, a simple checklist, and a plan that focuses inspections on higher-risk areas.", ask: "Which planned inspections were missed, and were they in high-risk areas?" }; },
-      admin: function (p) { return { title: "Many closed actions rely only on training, reminders or signage", evidence: p.admin + " of " + p.closed + " closed actions (" + P(p.pct) + ") rely only on training, reminders or signage, against your " + P(p.thr) + " limit.", why: "These controls depend on people remembering to act. They are usually weaker than removing the hazard or adding a physical safeguard.", invest: "A review of whether elimination, substitution or engineering controls were considered before training and signage.", ask: "For the repeated hazards, was a stronger control assessed, and why was it not chosen?" }; },
-      quality: function (p) { return { title: "Leading indicators look healthy, yet injuries are above target", evidence: "The recordable rate is " + R(p.trir) + " against your target of " + R(p.target) + ", while none of the leading indicators fell below your thresholds.", why: "The leading indicators may be counting activity (inspections done, actions closed) rather than testing whether controls are working.", invest: "A review of the leading indicators themselves, adding measures that test control performance, not only activity.", ask: "Which of our leading indicators would have warned us about the injuries that actually happened?" }; }
+      admin: function (p) { return { title: "Many closed actions rely only on training, reminders or signage", evidence: p.admin + " of " + p.closed + " closed actions (" + P(p.pct) + ") rely only on training, reminders or signage, against your " + P(p.thr) + " limit.", why: "These controls depend on people remembering to act, so they are usually less reliable than removing the hazard or adding a physical safeguard. Training and signage can still be appropriate, especially alongside stronger controls. What matters most is that the root cause was correctly diagnosed and the control fits it.", invest: "A review of the root-cause diagnosis for the repeated hazards, and of whether elimination, substitution or engineering controls were considered.", ask: "Was the root cause confirmed, and was a stronger control considered and judged not feasible?" }; },
+      quality: function (p) { return { title: "Leading indicators look healthy, yet injuries are above target", evidence: "The recordable rate is " + R(p.trir) + " (95% interval " + R(p.lo) + " to " + R(p.hi) + ") against your target of " + R(p.target) + ", while none of the leading indicators fell below your thresholds.", why: "The leading indicators may be counting activity (inspections done, actions closed) rather than testing whether controls are working.", invest: "A review of the leading indicators themselves, adding measures that test control performance, not only activity.", ask: "Which of our leading indicators would have warned us about the injuries that actually happened?" }; }
     }
   };
 
   /* ================= generated text: Bahasa Indonesia ================= */
   function rsID(n) { return n > 0 ? " " + n + " kejadian berulang juga dilaporkan." : ""; }
   var IDT = {
-    field: { hours: "Jam kerja", recordable: "Cedera recordable", lti: "Cedera hilang waktu kerja", repeats: "Kejadian berulang", targetTrir: "Angka target", hazRep: "Bahaya dilaporkan", hazClosed: "Bahaya ditutup", actTotal: "Tindakan korektif", actClosed: "Tindakan ditutup", actVerified: "Ditutup & terverifikasi efektif", actOverdue: "Tindakan terbuka lewat jatuh tempo", inspPlan: "Inspeksi direncanakan", inspDone: "Inspeksi diselesaikan", adminClosed: "Tindakan ditutup yang hanya pelatihan/rambu" },
+    field: { hours: "Jam kerja", recordable: "Cedera recordable", lti: "Cedera hilang waktu kerja", repeats: "Kejadian berulang", targetTrir: "Angka target", hazRep: "Bahaya dilaporkan", hazClosed: "Bahaya ditutup", actTotal: "Tindakan korektif yang dibuat", actClosed: "Tindakan ditutup", actVerified: "Ditutup & terverifikasi efektif", actOverdue: "Tindakan terbuka lewat jatuh tempo", inspPlan: "Inspeksi direncanakan", inspDone: "Inspeksi diselesaikan", adminClosed: "Tindakan ditutup yang hanya pelatihan/rambu" },
     thr: { close: "Target penutupan", eff: "Target terverifikasi efektif", overdue: "Maks. porsi lewat jatuh tempo", insp: "Target penyelesaian inspeksi", rep: "Min. laporan per cedera recordable", admin: "Maks. porsi hanya pelatihan/rambu" },
     chk: {
       hoursZero: function () { return "Jam kerja harus lebih dari nol untuk menghitung angka cedera."; },
       ltiGtRec: function () { return "Cedera hilang waktu kerja tidak boleh melebihi cedera recordable (cedera hilang waktu kerja adalah bagian darinya). Perhitungan angka cedera dilewati."; },
       hazGt: function () { return "Bahaya yang ditutup tidak boleh melebihi bahaya yang dilaporkan. Penutupan bahaya dilewati."; },
-      actGt: function () { return "Tindakan yang ditutup tidak boleh melebihi total tindakan. Metrik tindakan dilewati."; },
+      actGt: function () { return "Tindakan yang ditutup tidak boleh melebihi tindakan yang dibuat. Hitung hanya tindakan yang dibuat pada periode yang sama. Metrik tindakan dilewati."; },
       verGt: function () { return "Tindakan yang terverifikasi efektif tidak boleh melebihi tindakan yang ditutup. Metrik tersebut dilewati."; },
-      odGt: function () { return "Tindakan lewat jatuh tempo tidak boleh melebihi tindakan yang masih terbuka (total dikurangi yang ditutup). Metrik tersebut dilewati."; },
+      odGt: function () { return "Tindakan lewat jatuh tempo tidak boleh melebihi tindakan yang masih terbuka (dibuat dikurangi ditutup). Metrik tersebut dilewati."; },
       adminGt: function () { return "Tindakan yang hanya berupa pelatihan/rambu tidak boleh melebihi tindakan yang ditutup. Metrik tersebut dilewati."; },
       inspGt: function () { return "Inspeksi yang diselesaikan tidak boleh melebihi inspeksi yang direncanakan. Metrik tersebut dilewati."; },
       smallOpen: function (p) { return "Porsi lewat jatuh tempo hanya didasarkan pada " + p.n + " tindakan terbuka. Baca bersama jumlahnya, bukan hanya persentasenya."; },
-      smallRec: function (p) { return "Dengan hanya " + p.n + " kasus recordable, angka cedera dapat berubah drastis. Baca angkanya bersama jumlah kasusnya."; }
+      smallRec: function (p) { return "Dengan hanya " + p.n + " kasus recordable, angkanya kurang presisi. Baca sebagai rentang (lihat interval 95%), bersama jumlah kasusnya."; },
+      aboveChance: function (p) { return "Angka recordable berada di atas target Anda, tetapi interval 95%-nya (" + R(p.lo) + " hingga " + R(p.hi) + ") mencakup target, sehingga kebetulan saja bisa menjelaskan selisihnya. Anggap ini sinyal untuk dipantau, bukan bukti adanya perubahan."; }
     },
     badInt: function (l) { return "\u201C" + l + "\u201D harus berupa bilangan bulat 0 atau lebih. Isian ini diabaikan."; },
     badNum: function (l) { return "\u201C" + l + "\u201D harus berupa angka yang valid dalam rentang yang ditentukan. Isian ini diabaikan."; },
-    none: "Tidak ditemukan ketidakkonsistenan pada angka yang dimasukkan. Ini hanya berarti angkanya konsisten satu sama lain, belum tentu benar. Pastikan pengecualian Anda (misalnya kasus perjalanan pergi-pulang atau kontraktor) diterapkan dengan cara yang sama di setiap periode.",
+    none: "Tidak ditemukan ketidakkonsistenan pada angka yang dimasukkan. Ini hanya berarti angkanya konsisten satu sama lain, belum tentu benar. Pastikan pengecualian Anda (misalnya kasus perjalanan pergi-pulang atau kontraktor) diterapkan dengan cara yang sama di setiap periode, dan bahwa jam kerja mencakup orang yang sama dengan kasusnya.",
     status: {
-      aboveWeak: "Hasil berada di atas target Anda dan indikator peringatan dini lemah. Perbaiki dulu sistem yang memberi sinyal dini, lalu tangani kesenjangan spesifik di bawah ini.",
-      aboveStrong: "Hasil berada di atas target Anda meskipun indikator leading tampak sehat. Periksa apakah indikator tersebut benar-benar mengukur penurunan risiko, bukan sekadar aktivitas.",
+      aboveWeak: "Hasil berada di atas target Anda (interval 95% tidak mencakup target) dan indikator peringatan dini lemah. Perbaiki dulu sistem yang memberi sinyal dini, lalu tangani kesenjangan spesifik di bawah ini.",
+      aboveStrong: "Hasil berada di atas target Anda (interval 95% tidak mencakup target) meskipun indikator leading tampak sehat. Periksa apakah indikator tersebut benar-benar mengukur penurunan risiko, bukan sekadar aktivitas.",
+      chanceWeak: "Angka recordable berada di atas target Anda, tetapi dengan jumlah kasus sesedikit ini kebetulan saja bisa menjelaskan selisihnya. Indikator peringatan dini Anda lemah, jadi perkuat dulu itu, lalu tangani kesenjangan spesifik di bawah ini.",
+      chanceStrong: "Angka recordable berada di atas target Anda, tetapi dengan jumlah kasus sesedikit ini kebetulan saja bisa menjelaskan selisihnya, dan indikator leading tampak sehat. Pantau tren selama beberapa periode, jangan bereaksi pada satu periode saja.",
+      chanceUnknown: "Angka recordable berada di atas target Anda, tetapi dengan jumlah kasus sesedikit ini kebetulan saja bisa menjelaskan selisihnya. Masukkan minimal dua indikator leading untuk melihat gambaran peringatan dini.",
       withinWeak: "Hasil masih dalam target Anda, tetapi beberapa indikator leading lemah. Hasil yang baik belum tentu bertahan tanpa memperbaiki kesenjangan di bawah ini.",
       withinStrong: "Hasil dalam target Anda dan indikator leading secara umum sehat. Tetap periksa di mana paparan terkonsentrasi dan apakah indikator menguji kinerja pengendalian.",
       weakOnly: "Beberapa indikator leading berada di bawah ambang batas Anda. Tambahkan angka target untuk membandingkannya dengan hasil cedera.",
@@ -769,7 +841,9 @@ footer .wrap{display:grid;gap:8px}
       empty: "<strong>Hasil Anda akan muncul di sini.</strong><br>Masukkan angka Anda pada formulir, atau pilih <em>Muat contoh data dummy</em> untuk melihat cara kerjanya.",
       baseShort: { 200000: "200 rb jam", 1000000: "1 jt jam" },
       k1: function (b) { return "Angka recordable per " + b; }, k2: function (b) { return "Angka hilang waktu kerja per " + b; },
-      k3: "Laporan per cedera recordable", k4: "Kejadian berulang", na: "n/a",
+      k3: "Laporan per cedera recordable", k4: "Kejadian berulang", k5: function (b) { return "Laporan bahaya per " + b; }, na: "n/a",
+      ci: function (lo, hi) { return "interval 95%: " + R(lo) + " hingga " + R(hi); },
+      ciNote: "Interval menunjukkan seberapa jauh kebetulan saja dapat menggeser angka ketika kasusnya sedikit. Baca interval yang lebar sebagai rentang, bukan satu angka.",
       mAct: "Penutupan tindakan", mHaz: "Penutupan bahaya", mEff: "Terverifikasi efektif (dari yang ditutup)", mInsp: "Inspeksi selesai", mOver: "Lewat jatuh tempo (dari tindakan terbuka)", mAdmin: "Hanya pelatihan/rambu (dari yang ditutup)",
       target: "target ", limit: "batas ", meets: "memenuhi ambang batas", notMeets: "belum memenuhi ambang batas",
       meterNote: "Penanda gelap pada tiap batang adalah ambang batas Anda. Warna oranye berarti ambang batas belum terpenuhi.",
@@ -777,7 +851,7 @@ footer .wrap{display:grid;gap:8px}
       noneBelow: "Tidak ada indikator yang berada di bawah ambang batas yang Anda tetapkan. Pertimbangkan di mana paparan terkonsentrasi, dan apakah indikator menguji kinerja pengendalian, bukan hanya aktivitas.",
       showOther: function (n) { return "Tampilkan " + n + " sinyal lainnya"; },
       howH: "Cara peringkat disusun",
-      howP: "Setiap sinyal diurutkan berdasarkan seberapa jauh angka Anda dari ambang batas yang Anda tetapkan. Sinyal yang terkait kejadian berulang, atau cedera di atas target, diberi peringkat lebih tinggi. Ini aturan praktis untuk memulai diskusi. Ini bukan skor risiko, dan tidak mengetahui tingkat keparahan kejadian maupun biaya.",
+      howP: "Setiap sinyal diurutkan berdasarkan seberapa jauh angka Anda dari ambang batas yang Anda tetapkan. Sinyal yang terkait kejadian berulang, atau cedera yang jelas di atas target, diberi peringkat lebih tinggi. Ambang batas, skor, dan peringkat adalah aturan praktis alat ini sendiri, bukan standar yang dipublikasikan. Ini cara untuk memulai diskusi, bukan skor risiko, dan tidak mengetahui tingkat keparahan kejadian maupun biaya.",
       sev: { high: "Tinggi", medium: "Sedang", watch: "Pantau" },
       dt: ["Yang ditunjukkan angka Anda", "Mengapa ini penting", "Ke mana investasi atau upaya dapat diarahkan", "Pertanyaan sebelum memutuskan"],
       briefNote: "Draf ringkasan manajemen dari angka Anda. Sunting sebelum digunakan.",
@@ -785,7 +859,7 @@ footer .wrap{display:grid;gap:8px}
     },
     b: {
       finding: "Temuan: ", limitation: "Keterbatasan: ", next: "Tindakan berikutnya: ", decision: "Keputusan yang diperlukan: ",
-      rate: function (h, rt, lt, base) { return "Pada periode yang dimasukkan (" + h + " jam kerja), angka recordable adalah " + rt + " per " + base + " jam" + (lt !== null ? " dan angka cedera hilang waktu kerja adalah " + lt : "") + ". "; },
+      rate: function (h, rt, ci, lt, base) { return "Pada periode yang dimasukkan (" + h + " jam kerja), angka recordable adalah " + rt + (ci ? " (interval 95%: " + ci + ")" : "") + " per " + base + " jam" + (lt !== null ? " dan angka cedera hilang waktu kerja adalah " + lt : "") + ". "; },
       noRate: "Angka cedera tidak dapat dihitung dari angka yang dimasukkan. ",
       gap: function (t, e) { return "Kesenjangan terbesar: " + t.toLowerCase() + ". " + e; },
       noGap: "Tidak ada indikator leading yang berada di bawah ambang batas yang ditetapkan, sehingga tidak ada satu kesenjangan prioritas pada angka ini.",
@@ -802,15 +876,15 @@ footer .wrap{display:grid;gap:8px}
       c: { cls: "partial", text: "<strong>Terlalu kuat.</strong> Kejadian berulang adalah sinyal untuk menyelidiki, tetapi Anda masih perlu memeriksa apakah bahayanya dan pengendalian yang gagal sama sebelum menyimpulkan bahwa tindakan itu gagal." }
     },
     sig: {
-      eff: function (p) { return { title: "Tindakan yang sudah ditutup belum diverifikasi efektivitasnya", evidence: p.ver + " dari " + p.closed + " tindakan yang ditutup terverifikasi efektif (" + P(p.pct) + ") dibandingkan ambang batas Anda " + P(p.thr) + "." + rsID(p.rep), why: "Tindakan yang ditutup menunjukkan pekerjaannya selesai, bukan bahwa pengendalian menurunkan risiko. Tanpa verifikasi, penutupan dapat melebih-lebihkan seberapa besar risiko yang sudah terkendali.", invest: "Waktu dan penanggung jawab untuk pemeriksaan efektivitas, serta kriteria keberhasilan yang jelas yang ditulis saat tindakan dibuat.", ask: "Apa yang kita harapkan terlihat jika tindakan ini berhasil, siapa yang memeriksa, dan kapan?" }; },
+      eff: function (p) { return { title: "Tindakan yang sudah ditutup belum diverifikasi efektivitasnya", evidence: p.ver + " dari " + p.closed + " tindakan yang ditutup terverifikasi efektif (" + P(p.pct) + ") dibandingkan ambang batas Anda " + P(p.thr) + "." + rsID(p.rep), why: "Tindakan yang ditutup menunjukkan pekerjaannya selesai, bukan bahwa pengendalian menurunkan risiko. Tanpa verifikasi, penutupan dapat melebih-lebihkan seberapa besar risiko yang sudah terkendali. ISO 45001 klausul 10.2 meminta organisasi meninjau efektivitas tindakan korektif.", invest: "Waktu dan penanggung jawab untuk pemeriksaan efektivitas, serta kriteria keberhasilan yang jelas yang ditulis saat tindakan dibuat.", ask: "Apa yang kita harapkan terlihat jika tindakan ini berhasil, siapa yang memeriksa, dan kapan?" }; },
       overdue: function (p) { return { title: "Tindakan terbuka melewati tenggat", evidence: p.od + " dari " + p.open + " tindakan terbuka lewat jatuh tempo (" + P(p.pct) + ") dibandingkan batas Anda " + P(p.thr) + ".", why: "Keterlambatan biasanya menunjukkan kepemilikan yang tidak jelas, kapasitas terbatas, atau pekerjaan yang tertahan menunggu keputusan.", invest: "Mekanisme eskalasi, kapasitas penanggung jawab, tenggat yang realistis, dan jalur keputusan cepat untuk tindakan tertahan yang membutuhkan anggaran atau persetujuan.", ask: "Tindakan terlambat mana yang tertahan, dan keputusan atau sumber daya apa yang dapat melepaskannya?" }; },
       repeat: function (p) { return { title: "Penutupan tampak baik, tetapi kejadian serupa terus berulang", evidence: "Penutupan tindakan " + P(p.pct) + " (target " + P(p.thr) + "), namun " + p.rep + " kejadian berulang dilaporkan.", why: "Penutupan yang tinggi disertai kejadian berulang menunjukkan tindakan mungkin diselesaikan tanpa menyentuh akar penyebab atau pengendalian yang gagal.", invest: "Kualitas investigasi dan tinjauan akar penyebab, dan mungkin pengendalian yang lebih kuat untuk bahaya yang berulang.", ask: "Apakah kejadian berulang itu benar-benar bahaya yang sama dengan pengendalian gagal yang sama, dan apakah tindakan sebelumnya menangani pengendalian tersebut?" }; },
-      close: function (p) { return { title: "Penutupan tindakan korektif di bawah target", evidence: p.closed + " dari " + p.total + " tindakan ditutup (" + P(p.pct) + ") dibandingkan target Anda " + P(p.thr) + "." + rsID(p.rep), why: "Tindakan yang masih terbuka berarti bahaya atau penyebab yang sudah diketahui tetap tidak terkendali lebih lama.", invest: "Disiplin pemantauan tindakan: penanggung jawab yang jelas, tenggat, dan tinjauan mingguan singkat atas tindakan terbuka.", ask: "Tindakan terbuka mana yang menangani bahaya berisiko tertinggi, dan apakah itu yang perlu ditutup lebih dulu?" }; },
+      close: function (p) { return { title: "Penutupan tindakan korektif di bawah target", evidence: p.closed + " dari " + p.total + " tindakan yang dibuat sudah ditutup (" + P(p.pct) + ") dibandingkan target Anda " + P(p.thr) + "." + rsID(p.rep), why: "Tindakan yang masih terbuka berarti bahaya atau penyebab yang sudah diketahui tetap tidak terkendali lebih lama.", invest: "Disiplin pemantauan tindakan: penanggung jawab yang jelas, tenggat, dan tinjauan mingguan singkat atas tindakan terbuka.", ask: "Tindakan terbuka mana yang menangani bahaya berisiko tertinggi, dan apakah itu yang perlu ditutup lebih dulu?" }; },
       haz: function (p) { return { title: "Bahaya yang dilaporkan tidak ditutup cukup cepat", evidence: p.closed + " dari " + p.rep + " bahaya yang dilaporkan sudah ditutup (" + P(p.pct) + ") dibandingkan target Anda " + P(p.thr) + ".", why: "Jika orang melaporkan bahaya tetapi melihat sedikit perubahan, pelaporan cenderung menurun. Tumpukan bahaya juga membuat paparan tetap ada.", invest: "Aturan triase sederhana agar bahaya berisiko tinggi ditangani lebih dulu, serta umpan balik yang terlihat kepada pelapor.", ask: "Berapa porsi bahaya yang belum ditutup yang berisiko tinggi, dan siapa penanggung jawabnya?" }; },
-      report: function (p) { return { title: "Laporan peringatan dini sedikit dibandingkan jumlah cedera", evidence: p.hazRep + " laporan bahaya untuk " + p.rec + " cedera recordable berarti " + R(p.rpr) + " per cedera, dibandingkan minimum Anda " + p.min + "." + (p.lag ? " Angka recordable juga di atas target Anda." : ""), why: "Jika cedera terjadi tetapi sedikit bahaya atau nyaris celaka yang dilaporkan, sinyal dini mungkin terlewat, atau pekerja mungkin kurang percaya pada proses pelaporan.", invest: "Saluran pelaporan yang lebih mudah, umpan balik dari supervisor untuk setiap laporan, dan pembinaan tentang apa yang layak dilaporkan.", ask: "Apakah bahaya memang jarang, atau tidak dilaporkan? Bagaimana kita bisa membedakannya?" }; },
+      report: function (p) { return { title: "Laporan bahaya sedikit dibandingkan jumlah cedera (tafsirkan dengan hati-hati)", evidence: p.hazRep + " laporan bahaya untuk " + p.rec + " cedera recordable berarti " + R(p.rpr) + " per cedera, dibandingkan minimum ilustrasi Anda " + p.min + "." + (p.lag ? " Angka recordable juga jelas di atas target Anda." : ""), why: "Laporan yang sedikit di tengah adanya cedera dapat berarti sinyal dini terlewat, atau pekerja kurang percaya pada proses pelaporan. Jumlah laporan juga mencerminkan budaya dan volume, bukan hanya risiko, sehingga rasio rendah adalah pemicu untuk bertanya, dan jumlah tinggi pun bukan bukti keselamatan.", invest: "Saluran pelaporan yang lebih mudah, umpan balik dari supervisor untuk setiap laporan, dan pembinaan tentang apa yang layak dilaporkan.", ask: "Apakah bahaya memang jarang, atau tidak dilaporkan? Bagaimana kita bisa membedakannya?" }; },
       insp: function (p) { return { title: "Inspeksi terencana belum semuanya diselesaikan", evidence: p.done + " dari " + p.plan + " inspeksi terencana diselesaikan (" + P(p.pct) + ") dibandingkan target Anda " + P(p.thr) + ".", why: "Inspeksi yang terlewat menghilangkan salah satu sumber utama peringatan dini, dan yang terlewat mungkin berada di area tersibuk atau berisiko tertinggi.", invest: "Waktu yang dilindungi, daftar periksa sederhana, dan rencana yang memfokuskan inspeksi pada area berisiko lebih tinggi.", ask: "Inspeksi terencana mana yang terlewat, dan apakah berada di area berisiko tinggi?" }; },
-      admin: function (p) { return { title: "Banyak tindakan yang ditutup hanya mengandalkan pelatihan, pengingat, atau rambu", evidence: p.admin + " dari " + p.closed + " tindakan yang ditutup (" + P(p.pct) + ") hanya mengandalkan pelatihan, pengingat, atau rambu, dibandingkan batas Anda " + P(p.thr) + ".", why: "Pengendalian ini bergantung pada orang untuk mengingat bertindak. Biasanya lebih lemah daripada menghilangkan bahaya atau menambah pengaman fisik.", invest: "Tinjauan apakah eliminasi, substitusi, atau pengendalian teknis (engineering) sudah dipertimbangkan sebelum pelatihan dan rambu.", ask: "Untuk bahaya yang berulang, apakah pengendalian yang lebih kuat sudah dinilai, dan mengapa tidak dipilih?" }; },
-      quality: function (p) { return { title: "Indikator leading tampak sehat, tetapi cedera di atas target", evidence: "Angka recordable " + R(p.trir) + " dibandingkan target Anda " + R(p.target) + ", sementara tidak ada indikator leading yang berada di bawah ambang batas Anda.", why: "Indikator leading mungkin menghitung aktivitas (inspeksi dilakukan, tindakan ditutup) dan belum menguji apakah pengendalian bekerja.", invest: "Tinjauan terhadap indikator leading itu sendiri, dengan menambahkan ukuran yang menguji kinerja pengendalian, bukan hanya aktivitas.", ask: "Indikator leading mana yang akan memberi peringatan tentang cedera yang benar-benar terjadi?" }; }
+      admin: function (p) { return { title: "Banyak tindakan yang ditutup hanya mengandalkan pelatihan, pengingat, atau rambu", evidence: p.admin + " dari " + p.closed + " tindakan yang ditutup (" + P(p.pct) + ") hanya mengandalkan pelatihan, pengingat, atau rambu, dibandingkan batas Anda " + P(p.thr) + ".", why: "Pengendalian ini bergantung pada orang untuk mengingat bertindak, sehingga biasanya kurang andal daripada menghilangkan bahaya atau menambah pengaman fisik. Pelatihan dan rambu tetap dapat sesuai, terutama bersama pengendalian yang lebih kuat. Yang terpenting adalah akar penyebabnya didiagnosis dengan benar dan pengendaliannya sesuai dengan penyebab itu.", invest: "Tinjauan diagnosis akar penyebab untuk bahaya yang berulang, dan apakah eliminasi, substitusi, atau pengendalian teknis sudah dipertimbangkan.", ask: "Apakah akar penyebab sudah dipastikan, dan apakah pengendalian yang lebih kuat sudah dipertimbangkan lalu dinilai tidak layak?" }; },
+      quality: function (p) { return { title: "Indikator leading tampak sehat, tetapi cedera di atas target", evidence: "Angka recordable " + R(p.trir) + " (interval 95%: " + R(p.lo) + " hingga " + R(p.hi) + ") dibandingkan target Anda " + R(p.target) + ", sementara tidak ada indikator leading yang berada di bawah ambang batas Anda.", why: "Indikator leading mungkin menghitung aktivitas (inspeksi dilakukan, tindakan ditutup) dan belum menguji apakah pengendalian bekerja.", invest: "Tinjauan terhadap indikator leading itu sendiri, dengan menambahkan ukuran yang menguji kinerja pengendalian, bukan hanya aktivitas.", ask: "Indikator leading mana yang akan memberi peringatan tentang cedera yang benar-benar terjadi?" }; }
     }
   };
   var TT = { en: EN, id: IDT };
@@ -857,7 +931,7 @@ footer .wrap{display:grid;gap:8px}
   function analyze(v, tRaw) {
     var t = { close: tRaw.close / 100, eff: tRaw.eff / 100, overdue: tRaw.overdue / 100, insp: tRaw.insp / 100, rep: tRaw.rep, admin: tRaw.admin / 100 };
     var checks = [];
-    var m = { trir: null, ltir: null, hazClose: null, actClose: null, eff: null, overdue: null, insp: null, rpr: null, admin: null, open: null };
+    var m = { trir: null, ltir: null, trirCI: null, ltirCI: null, rph: null, hazClose: null, actClose: null, eff: null, overdue: null, insp: null, rpr: null, admin: null, open: null };
     function err(key) { checks.push({ level: "error", key: key, p: {} }); }
     function warn(key, p) { checks.push({ level: "warn", key: key, p: p || {} }); }
 
@@ -866,9 +940,11 @@ footer .wrap{display:grid;gap:8px}
     var injOk = true;
     if (v.recordable !== null && v.lti !== null && v.lti > v.recordable) { err("ltiGtRec"); injOk = false; }
     if (hoursOk && injOk) {
-      if (v.recordable !== null) m.trir = v.recordable * v.base / v.hours;
-      if (v.lti !== null) m.ltir = v.lti * v.base / v.hours;
+      if (v.recordable !== null) { m.trir = v.recordable * v.base / v.hours; m.trirCI = rateCI(v.recordable, v.hours, v.base); }
+      if (v.lti !== null) { m.ltir = v.lti * v.base / v.hours; m.ltirCI = rateCI(v.lti, v.hours, v.base); }
     }
+    if (hoursOk && v.hazRep !== null) m.rph = v.hazRep * v.base / v.hours;
+
     if (v.hazRep !== null && v.hazClosed !== null) {
       if (v.hazClosed > v.hazRep) err("hazGt"); else m.hazClose = ratio(v.hazClosed, v.hazRep);
     }
@@ -896,6 +972,14 @@ footer .wrap{display:grid;gap:8px}
     if (v.hazRep !== null && v.recordable !== null && v.recordable > 0) m.rpr = v.hazRep / v.recordable;
     if (v.recordable !== null && v.recordable > 0 && v.recordable < 10) warn("smallRec", { n: v.recordable });
 
+    // Lagging status versus target. "above" only when the 95% interval excludes the target.
+    var lagStatus = "unknown";
+    if (v.targetTrir !== null && m.trir !== null) {
+      if (m.trir <= v.targetTrir) lagStatus = "within";
+      else if (m.trirCI[0] > v.targetTrir) lagStatus = "above";
+      else { lagStatus = "aboveChance"; warn("aboveChance", { lo: m.trirCI[0], hi: m.trirCI[1] }); }
+    }
+
     var sigs = [];
     var rep = v.repeats !== null ? v.repeats : 0;
     function add(o) { sigs.push(o); }
@@ -916,8 +1000,9 @@ footer .wrap{display:grid;gap:8px}
       add({ id: "haz", leading: true, score: (t.close - m.hazClose) / t.close, p: { closed: v.hazClosed, rep: v.hazRep, pct: m.hazClose, thr: t.close } });
     }
     if (m.rpr !== null && m.rpr < t.rep) {
-      var lag = (v.targetTrir !== null && m.trir !== null && m.trir > v.targetTrir);
-      add({ id: "report", leading: true, score: (t.rep - m.rpr) / t.rep + (lag ? 0.25 : 0), p: { hazRep: v.hazRep, rec: v.recordable, rpr: m.rpr, min: t.rep, lag: lag } });
+      var lag = (lagStatus === "above");
+      // The reports-per-injury ratio has no published benchmark, so this signal is capped at "medium".
+      add({ id: "report", leading: true, score: Math.min(0.5, (t.rep - m.rpr) / t.rep + (lag ? 0.25 : 0)), p: { hazRep: v.hazRep, rec: v.recordable, rpr: m.rpr, min: t.rep, lag: lag } });
     }
     if (m.insp !== null && m.insp < t.insp) {
       add({ id: "insp", leading: true, score: (t.insp - m.insp) / t.insp, p: { done: v.inspDone, plan: v.inspPlan, pct: m.insp, thr: t.insp } });
@@ -929,10 +1014,9 @@ footer .wrap{display:grid;gap:8px}
     var leadAvail = [m.actClose, m.hazClose, m.eff, m.overdue, m.insp, m.rpr].filter(function (x) { return x !== null; }).length;
     var leadFlag = sigs.filter(function (s) { return s.leading; }).length;
     var leadStatus = leadAvail < 2 ? "unknown" : (leadFlag / leadAvail >= 0.5 ? "weak" : "strong");
-    var lagStatus = (v.targetTrir !== null && m.trir !== null) ? (m.trir > v.targetTrir ? "above" : "within") : "unknown";
 
     if (lagStatus === "above" && leadStatus === "strong" && leadFlag === 0) {
-      add({ id: "quality", leading: false, score: 0.5, p: { trir: m.trir, target: v.targetTrir } });
+      add({ id: "quality", leading: false, score: 0.5, p: { trir: m.trir, lo: m.trirCI[0], hi: m.trirCI[1], target: v.targetTrir } });
     }
     sigs.sort(function (a, b) { return b.score - a.score; });
     sigs.forEach(function (s) { s.sev = s.score >= 0.6 ? "high" : (s.score >= 0.3 ? "medium" : "watch"); });
@@ -945,6 +1029,7 @@ footer .wrap{display:grid;gap:8px}
     var l = a.lagStatus, d = a.leadStatus, S = tt().status;
     if (l === "above" && d === "weak") return S.aboveWeak;
     if (l === "above" && d === "strong") return S.aboveStrong;
+    if (l === "aboveChance") return d === "weak" ? S.chanceWeak : (d === "strong" ? S.chanceStrong : S.chanceUnknown);
     if (l === "within" && d === "weak") return S.withinWeak;
     if (l === "within" && d === "strong") return S.withinStrong;
     if (d === "weak") return S.weakOnly;
@@ -955,7 +1040,10 @@ footer .wrap{display:grid;gap:8px}
     var B = tt().b, v = a.v, m = a.m, top = a.sigs[0], base = N(v.base);
     var st = top ? sigText(top) : null;
     var fin = B.finding;
-    fin += (m.trir !== null) ? B.rate(N(v.hours), R(m.trir), m.ltir !== null ? R(m.ltir) : null, base) : B.noRate;
+    if (m.trir !== null) {
+      var ci = m.trirCI ? R(m.trirCI[0]) + (lang === "id" ? " hingga " : " to ") + R(m.trirCI[1]) : null;
+      fin += B.rate(N(v.hours), R(m.trir), ci, m.ltir !== null ? R(m.ltir) : null, base);
+    } else { fin += B.noRate; }
     fin += top ? B.gap(st.title, st.evidence) : B.noGap;
     var lim = B.limitation + B.lim;
     a.checks.forEach(function (c) { if (c.level === "warn") lim += B.note + chkText(c); });
@@ -965,7 +1053,10 @@ footer .wrap{display:grid;gap:8px}
   }
 
   /* ================= decision tool: rendering ================= */
-  function kpi(label, val) { return '<div class="k' + (val === null ? ' na' : '') + '"><b>' + (val === null ? tt().ui.na : val) + '</b><span>' + esc(label) + '</span></div>'; }
+  function kpi(label, val, sub) {
+    return '<div class="k' + (val === null ? ' na' : '') + '"><b>' + (val === null ? tt().ui.na : val) + '</b><span>' + esc(label) + '</span>' +
+      (sub ? '<small class="ci">' + esc(sub) + '</small>' : '') + '</div>';
+  }
   function meter(label, val, target, higherBetter) {
     if (val === null) return "";
     var U = tt().ui, ok = higherBetter ? val >= target : val <= target;
@@ -1008,11 +1099,13 @@ footer .wrap{display:grid;gap:8px}
 
     var bl = U.baseShort[inp.v.base];
     h += '<div class="rcard"><h3>' + U.h2 + '</h3><div class="kgrid">' +
-      kpi(U.k1(bl), a.m.trir === null ? null : R(a.m.trir)) +
-      kpi(U.k2(bl), a.m.ltir === null ? null : R(a.m.ltir)) +
+      kpi(U.k1(bl), a.m.trir === null ? null : R(a.m.trir), a.m.trirCI ? U.ci(a.m.trirCI[0], a.m.trirCI[1]) : null) +
+      kpi(U.k2(bl), a.m.ltir === null ? null : R(a.m.ltir), a.m.ltirCI ? U.ci(a.m.ltirCI[0], a.m.ltirCI[1]) : null) +
       kpi(U.k3, a.m.rpr === null ? null : R(a.m.rpr)) +
+      kpi(U.k5(bl), a.m.rph === null ? null : R(a.m.rph)) +
       kpi(U.k4, inp.v.repeats === null ? null : String(inp.v.repeats)) +
-      '</div><div class="status" style="margin-top:14px">' + esc(statusText(a)) + '</div><div style="margin-top:16px">' +
+      '</div>' + ((a.m.trirCI || a.m.ltirCI) ? '<p class="note" style="margin-top:10px">' + U.ciNote + '</p>' : '') +
+      '<div class="status" style="margin-top:14px">' + esc(statusText(a)) + '</div><div style="margin-top:16px">' +
       meter(U.mAct, a.m.actClose, a.t.close, true) +
       meter(U.mHaz, a.m.hazClose, a.t.close, true) +
       meter(U.mEff, a.m.eff, a.t.eff, true) +
@@ -1146,7 +1239,7 @@ footer .wrap{display:grid;gap:8px}
   applyLang(initialLang());
 
   // Exposed only so the logic can be tested. No side effects.
-  window.__hseLab = { analyze: analyze, sigText: sigText, chkText: chkText, buildBrief: buildBrief, setLang: function (l) { lang = l === "id" ? "id" : "en"; }, STR: STR, TT: TT };
+  window.__hseLab = { analyze: analyze, poissonCI: poissonCI, sigText: sigText, chkText: chkText, buildBrief: buildBrief, statusText: statusText, setLang: function (l) { lang = l === "id" ? "id" : "en"; }, STR: STR, TT: TT };
 })();
 
 </script>
